@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">{{ storeName | titlecase }}'s Store</mat-toolbar>
+
+<div class="product-grid">
+  <mat-card *ngFor="let p of products" class="product-card">
+    <img mat-card-image [src]="p.imageUrl || 'assets/no-image.png'" alt="{{ p.name }}">
+    <mat-card-content>
+      <h3>{{ p.name }}</h3>
+      <p>₹{{ p.price }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button color="primary" href="https://wa.me/919999999999?text=I'm interested in {{p.name}}">
+        Buy Now
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</div>

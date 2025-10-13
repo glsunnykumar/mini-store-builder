@@ -1,0 +1,77 @@
+::ng-deep .mat-dialog-container {
+    padding: 0 !important; // optional: remove extra dialog padding
+    overflow-x: hidden;
+    max-width: 90vw;
+    height: 500px;
+    box-sizing: border-box;
+}
+
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 1.5rem;
+    text-align: center;
+    max-height: 300vh;
+    overflow-y: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fefefe; // soft background
+}
+
+.full-width {
+    width: 100%;
+}
+
+.login-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem 0;
+    background: linear-gradient(to right, #4caf50, #81c784); // Green gradient
+    color: white;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.close-button {
+    color: white;
+}
+
+.mat-dialog-content {
+    padding: 0 1.5rem;
+    background-color: #fff;
+}
+
+
+.mat-form-field {
+    margin-bottom: 1rem;
+}
+
+.divider {
+    text-align: center;
+    margin: 1rem 0;
+    color: #aaa;
+}
+
+.mat-dialog-actions {
+    padding: 1rem 1.5rem;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        max-width: 90vw;
+    }
+}
