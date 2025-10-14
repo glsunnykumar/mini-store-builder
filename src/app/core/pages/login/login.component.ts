@@ -34,6 +34,7 @@ export class LoginComponent {
   email = '';
   password = '';
   isLoginMode = '';
+  hide :boolean = false;
   private auth = inject(AuthService);
   private router = inject(Router);
   loginForm: FormGroup;

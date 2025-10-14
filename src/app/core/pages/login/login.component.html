@@ -1,36 +1,51 @@
+<div class="login-container">
+  <mat-card class="auth-card mat-elevation-z8">
+    <div class="logo-section">
+      <img src="assets/logo.svg" alt="Mini Store Builder" class="logo" />
+      <h2>Welcome Back 👋</h2>
+      <p>Log in to continue building your store</p>
+    </div>
 
+    <form (ngSubmit)="onLogin()" #form="ngForm">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" name="email" required />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
 
-   <div class="card-header">
-    <h2 mat-dialog-title>{{ isLoginMode ? 'Login' : 'Create Account' }}</h2>
-    <!-- <button mat-icon-button class="close-button" (click)="closeModal()">
-      <mat-icon>close</mat-icon>
-    </button> -->
-  </div>
-  <mat-card class="login-card">
-   
-      <form [formGroup]="isLoginMode ? loginForm : signupForm" (ngSubmit)=" login()">
-        <ng-container *ngIf="!isLoginMode">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="displayName" />
-          </mat-form-field>
-        </ng-container>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" />
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" class="full-width" type="submit">
-          {{ isLoginMode ? 'Login' : 'Register' }}
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+      </mat-form-field>
 
-        
-      </form>
+      <button
+        mat-raised-button
+        color="primary"
+        class="login-btn"
+        [disabled]="form.invalid"
+      >
+        Log In
+      </button>
+    </form>
 
+    <p class="bottom-text">
+      Don’t have an account?
+      <a routerLink="/signup">Create one</a>
+    </p>
   </mat-card>
+</div>
