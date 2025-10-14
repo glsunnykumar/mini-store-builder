@@ -21,12 +21,8 @@ email = '';
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  async onSignup() {
-    try {
-      await this.auth.signup(this.email, this.password);
-      this.router.navigate(['/dashboard']);
-    } catch (err) {
-      alert('Signup failed: ' + (err as any).message);
-    }
+ 
+  onSignup() {
+    this.auth.signup(this.email, this.password);
   }
 }
