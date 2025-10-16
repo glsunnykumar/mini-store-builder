@@ -10,11 +10,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink, RouterModule } from "../../../../../node_modules/@angular/router/router_module.d-Bx9ArA6K";
 import { MatCardModule } from '@angular/material/card';
 
 @Component({

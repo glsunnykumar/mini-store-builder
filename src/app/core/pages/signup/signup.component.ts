@@ -7,6 +7,7 @@ import{MatFormFieldModule} from '@angular/material/form-field';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-signup',
@@ -16,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -24,13 +26,19 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
-email = '';
-  password = '';
+   name: string = '';
+  email: string = '';
+  password: string = '';
+  confirmPassword: string = ''; // ✅ Add this line
+  hidePassword = true;
+  hideConfirm = true;
+
   private auth = inject(AuthService);
   private router = inject(Router);
 
  
   onSignup() {
+    console.log('signup button is clicked');
     this.auth.signup(this.email, this.password);
   }
 }

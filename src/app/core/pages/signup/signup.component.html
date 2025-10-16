@@ -1,41 +1,101 @@
 <div class="signup-container">
-  <mat-card class="signup-card">
-    <mat-card-header>
-      <mat-card-title>Create Your Store 🛍️</mat-card-title>
-      <mat-card-subtitle>Join Mini Store Builder in seconds</mat-card-subtitle>
-    </mat-card-header>
+  <mat-card class="auth-card mat-elevation-z8">
+    <div class="logo-section">
+      <img src="assets/logo.svg" alt="Mini Store Builder" class="logo" />
+      <h2>Create Your Account ✨</h2>
+      <p>Sign up and start building your store today</p>
+    </div>
 
-    <mat-card-content>
-      <form>
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Full Name</mat-label>
-          <input matInput type="text" required />
-        </mat-form-field>
+    <form (ngSubmit)="onSignup()" #form="ngForm">
+      <!-- Full Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="name"
+          name="name"
+          required
+          placeholder="Enter your full name"
+        />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" required />
-        </mat-form-field>
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+        />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" required />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Confirm Password</mat-label>
-          <input matInput type="password" required />
-        </mat-form-field>
-
-        <button mat-flat-button color="primary" class="signup-btn full-width">
-          Create Account
+      <!-- Password -->
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          [(ngModel)]="password"
+          name="password"
+          required
+          minlength="6"
+          placeholder="Enter password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Toggle password visibility'"
+        >
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+      </mat-form-field>
 
-        <div class="extra-links">
-          <span>Already have an account?</span>
-          <a routerLink="/login">Login</a>
-        </div>
-      </form>
-    </mat-card-content>
+      <!-- Confirm Password -->
+      <mat-form-field appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          [type]="hideConfirm ? 'password' : 'text'"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          minlength="6"
+          placeholder="Re-enter password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideConfirm = !hideConfirm"
+          [attr.aria-label]="'Toggle confirm password visibility'"
+        >
+          <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Signup Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        class="signup-btn"
+        [disabled]="form.invalid || password !== confirmPassword"
+      >
+        Create Account
+      </button>
+    </form>
+
+    <!-- Bottom text -->
+    <p class="bottom-text">
+      Already have an account?
+      <a routerLink="/login">Log in</a>
+    </p>
   </mat-card>
 </div>
