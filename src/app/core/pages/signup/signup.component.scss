@@ -86,6 +86,26 @@ mat-icon {
   }
 }
 
+.error-hint {
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.form-warning {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
 /* 📱 Responsive adjustments */
 @media (max-width: 480px) {
   .auth-card {

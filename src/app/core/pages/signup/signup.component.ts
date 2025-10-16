@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import{MatFormFieldModule} from '@angular/material/form-field';
 import { AuthService } from '../../services/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
+    RouterModule
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'

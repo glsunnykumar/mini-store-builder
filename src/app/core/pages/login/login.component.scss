@@ -5,6 +5,16 @@
   height: 100vh;
   background: linear-gradient(135deg, #fce4ec, #f8bbd0); // soft pink gradient
 }
+mat-form-field {
+  width: 100%;
+  display: block;
+  margin-top: 1rem;
+
+  /* Adjust padding inside input fields */
+  .mat-mdc-form-field-infix {
+    padding: 0.75rem 0 !important;
+  }
+}
 
 .auth-card {
   width: 400px;

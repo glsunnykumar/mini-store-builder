@@ -6,19 +6,24 @@
       <p>Sign up and start building your store today</p>
     </div>
 
-    <form (ngSubmit)="onSignup()" #form="ngForm">
+    <form (ngSubmit)="onSignup()" #form="ngForm" novalidate>
       <!-- Full Name -->
       <mat-form-field appearance="outline">
         <mat-label>Full Name</mat-label>
         <input
           matInput
           type="text"
-          [(ngModel)]="name"
           name="name"
           required
+          minlength="3"
+          [(ngModel)]="name"
+          #nameField="ngModel"
           placeholder="Enter your full name"
         />
         <mat-icon matSuffix>person</mat-icon>
+        <mat-hint *ngIf="nameField.invalid && nameField.touched" class="error-hint">
+          Name is required (min 3 characters)
+        </mat-hint>
       </mat-form-field>
 
       <!-- Email -->
@@ -27,12 +32,17 @@
         <input
           matInput
           type="email"
-          [(ngModel)]="email"
           name="email"
           required
+          email
+          [(ngModel)]="email"
+          #emailField="ngModel"
           placeholder="Enter your email"
         />
         <mat-icon matSuffix>mail</mat-icon>
+        <mat-hint *ngIf="emailField.invalid && emailField.touched" class="error-hint">
+          Enter a valid email address
+        </mat-hint>
       </mat-form-field>
 
       <!-- Password -->
@@ -41,10 +51,11 @@
         <input
           matInput
           [type]="hidePassword ? 'password' : 'text'"
-          [(ngModel)]="password"
           name="password"
           required
           minlength="6"
+          [(ngModel)]="password"
+          #passwordField="ngModel"
           placeholder="Enter password"
         />
         <button
@@ -56,6 +67,9 @@
         >
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+        <mat-hint *ngIf="passwordField.invalid && passwordField.touched" class="error-hint">
+          Password must be at least 6 characters
+        </mat-hint>
       </mat-form-field>
 
       <!-- Confirm Password -->
@@ -64,10 +78,10 @@
         <input
           matInput
           [type]="hideConfirm ? 'password' : 'text'"
-          [(ngModel)]="confirmPassword"
           name="confirmPassword"
           required
-          minlength="6"
+          [(ngModel)]="confirmPassword"
+          #confirmField="ngModel"
           placeholder="Re-enter password"
         />
         <button
@@ -79,6 +93,9 @@
         >
           <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+        <mat-hint *ngIf="confirmField.touched && password !== confirmPassword" class="error-hint">
+          Passwords do not match
+        </mat-hint>
       </mat-form-field>
 
       <!-- Signup Button -->
@@ -90,9 +107,13 @@
       >
         Create Account
       </button>
+
+      <!-- Disabled Button Message -->
+      <p *ngIf="form.invalid || password !== confirmPassword" class="form-warning">
+        Please fill all fields correctly to enable signup.
+      </p>
     </form>
 
-    <!-- Bottom text -->
     <p class="bottom-text">
       Already have an account?
       <a routerLink="/login">Log in</a>
