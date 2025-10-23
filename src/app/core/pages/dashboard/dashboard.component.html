@@ -1,37 +1,103 @@
-<mat-toolbar color="primary">
-  <span>My Store Dashboard</span>
-  <span class="spacer"></span>
-  <button mat-icon-button color="warn" routerLink="/login">
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
+<div class="dashboard-container" [class.sidebar-collapsed]="!sidebarOpen">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.closed]="!sidebarOpen">
+    <div class="logo">
+      <mat-icon>storefront</mat-icon>
+      <span>Mini Store</span>
+    </div>
 
+    <nav class="nav-links">
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </a>
+      <a routerLink="/products" routerLinkActive="active">
+        <mat-icon>inventory_2</mat-icon> Products
+      </a>
+      <a routerLink="/orders" routerLinkActive="active">
+        <mat-icon>receipt_long</mat-icon> Orders
+      </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        <mat-icon>person</mat-icon> Profile
+      </a>
+    </nav>
+  </aside>
 
-<div class="container">
-  <button mat-raised-button color="accent" routerLink="/add-product">Add Product</button>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <button mat-icon-button class="menu-btn" (click)="toggleSidebar()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="welcome">👋 Welcome back, Seller!</div>
+      <button mat-icon-button>
+        <mat-icon>notifications</mat-icon>
+      </button>
+    </header>
 
-  <table mat-table [dataSource]="products" class="mat-elevation-z8">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Product </th>
-      <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
-    </ng-container>
+    <!-- Dashboard Content -->
+    <section class="content">
+      <div class="stats-grid">
+        <mat-card class="stat-card">
+          <mat-icon>shopping_cart</mat-icon>
+          <div>
+            <h3>120</h3>
+            <p>Orders</p>
+          </div>
+        </mat-card>
 
-    <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef> Price </th>
-      <td mat-cell *matCellDef="let element"> ₹{{ element.price }} </td>
-    </ng-container>
+        <mat-card class="stat-card">
+          <mat-icon>attach_money</mat-icon>
+          <div>
+            <h3>₹58,300</h3>
+            <p>Total Sales</p>
+          </div>
+        </mat-card>
 
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef> </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="warn" (click)="delete(element.id)">
-          <mat-icon>delete</mat-icon>
+        <mat-card class="stat-card">
+          <mat-icon>inventory</mat-icon>
+          <div>
+            <h3>48</h3>
+            <p>Products</p>
+          </div>
+        </mat-card>
+      </div>
+
+      <div class="action-bar">
+        <button mat-flat-button color="primary">
+          <mat-icon>add</mat-icon> Add New Product
         </button>
-      </td>
-    </ng-container>
+      </div>
 
-    <tr mat-header-row *matHeaderRowDef="['name', 'price', 'delete']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name', 'price', 'delete'];"></tr>
-  </table>
+      <mat-card class="recent-orders">
+        <h2>Recent Orders</h2>
+        <table mat-table [dataSource]="orders" class="mat-elevation-z2">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Order ID</th>
+            <td mat-cell *matCellDef="let order">{{ order.id }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="customer">
+            <th mat-header-cell *matHeaderCellDef>Customer</th>
+            <td mat-cell *matCellDef="let order">{{ order.customer }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let order">₹{{ order.total }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let order">
+              <span class="status" [ngClass]="order.status">{{ order.status }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card>
+    </section>
+  </main>
 </div>
-
