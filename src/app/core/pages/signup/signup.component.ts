@@ -39,7 +39,6 @@ export class SignupComponent {
 
  
   onSignup() {
-    console.log('signup button is clicked');
     this.auth.signup(this.email, this.password);
   }
 }
