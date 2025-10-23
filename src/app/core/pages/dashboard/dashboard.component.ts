@@ -20,7 +20,7 @@ interface Order {
 @Component({
   selector: 'app-dashboard',
   imports: [
-      CommonModule,
+    CommonModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
