@@ -4,6 +4,11 @@
     <div class="logo">
       <mat-icon>storefront</mat-icon>
       <span>Mini Store</span>
+
+       <!-- Close button (visible on mobile only) -->
+      <button mat-icon-button class="close-btn" (click)="toggleSidebar()">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
 
     <nav class="nav-links">
