@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Add Category</h2>
+
+<form [formGroup]="form" (ngSubmit)="saveCategory()" class="form-container">
+  <!-- Category Name -->
+  <mat-form-field appearance="outline">
+    <mat-label>Category Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <!-- Description -->
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <!-- Image Upload -->
+  <div class="upload">
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+    <img *ngIf="previewUrl" [src]="previewUrl" class="preview" />
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button mat-stroked-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || uploading">
+      {{ uploading ? 'Uploading...' : 'Save' }}
+    </button>
+  </div>
+</form>
