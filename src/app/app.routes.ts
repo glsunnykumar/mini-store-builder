@@ -23,12 +23,24 @@ export const routes: Routes = [
             (m) => m.DashboardHomeComponent
           ),
       },
-      {
-        path: 'products',
-        loadComponent: () =>
-          import('./core/pages/category-list/category-list.component').then(
-            (m) => m.CategoryListComponent
-          ),
+     {
+        path: 'category',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./core/pages/category-list/category-list.component').then(
+                (m) => m.CategoryListComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./core/pages/category/category-detail/category-detail.component').then(
+                (m) => m.CategoryDetailComponent
+              ),
+          },
+        ],
       },
       // {
       //   path: 'orders',
