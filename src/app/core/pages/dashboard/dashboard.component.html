@@ -4,27 +4,27 @@
     <div class="logo">
       <mat-icon>storefront</mat-icon>
       <span>Mini Store</span>
-
-       <!-- Close button (visible on mobile only) -->
       <button mat-icon-button class="close-btn" (click)="toggleSidebar()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
 
     <nav class="nav-links">
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <mat-icon>dashboard</mat-icon> Dashboard
-      </a>
-      <a routerLink="/products" routerLinkActive="active">
-        <mat-icon>inventory_2</mat-icon> Products
-      </a>
-      <a routerLink="/orders" routerLinkActive="active">
-        <mat-icon>receipt_long</mat-icon> Orders
-      </a>
-      <a routerLink="/profile" routerLinkActive="active">
-        <mat-icon>person</mat-icon> Profile
-      </a>
-    </nav>
+  <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <mat-icon>dashboard</mat-icon> Dashboard
+  </a>
+  <a routerLink="products" routerLinkActive="active">
+    <mat-icon>inventory_2</mat-icon> Products
+  </a>
+  <a routerLink="orders" routerLinkActive="active">
+    <mat-icon>receipt_long</mat-icon> Orders
+  </a>
+  <a routerLink="profile" routerLinkActive="active">
+    <mat-icon>person</mat-icon> Profile
+  </a>
+</nav>
+   
+
   </aside>
 
   <!-- Main Content -->
@@ -40,69 +40,9 @@
       </button>
     </header>
 
-    <!-- Dashboard Content -->
+    <!-- Page content -->
     <section class="content">
-      <div class="stats-grid">
-        <mat-card class="stat-card">
-          <mat-icon>shopping_cart</mat-icon>
-          <div>
-            <h3>120</h3>
-            <p>Orders</p>
-          </div>
-        </mat-card>
-
-        <mat-card class="stat-card">
-          <mat-icon>attach_money</mat-icon>
-          <div>
-            <h3>₹58,300</h3>
-            <p>Total Sales</p>
-          </div>
-        </mat-card>
-
-        <mat-card class="stat-card">
-          <mat-icon>inventory</mat-icon>
-          <div>
-            <h3>48</h3>
-            <p>Products</p>
-          </div>
-        </mat-card>
-      </div>
-
-      <div class="action-bar">
-        <button mat-flat-button color="primary">
-          <mat-icon>add</mat-icon> Add New Product
-        </button>
-      </div>
-
-      <mat-card class="recent-orders">
-        <h2>Recent Orders</h2>
-        <table mat-table [dataSource]="orders" class="mat-elevation-z2">
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Order ID</th>
-            <td mat-cell *matCellDef="let order">{{ order.id }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="customer">
-            <th mat-header-cell *matHeaderCellDef>Customer</th>
-            <td mat-cell *matCellDef="let order">{{ order.customer }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="total">
-            <th mat-header-cell *matHeaderCellDef>Total</th>
-            <td mat-cell *matCellDef="let order">₹{{ order.total }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let order">
-              <span class="status" [ngClass]="order.status">{{ order.status }}</span>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </mat-card>
+      <router-outlet></router-outlet>
     </section>
   </main>
 </div>

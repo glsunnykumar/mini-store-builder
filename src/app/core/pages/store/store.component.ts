@@ -8,11 +8,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { Product, ProductService } from '../../services/product/product.service';
 import { ActivatedRoute } from '@angular/router';
-import {TitleCasePipe} from '@angular/common';
+import {CommonModule, TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-store',
   imports: [
+    CommonModule,
     MatToolbarModule,
     MatCardModule,
     MatPaginatorModule,

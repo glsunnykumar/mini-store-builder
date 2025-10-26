@@ -1,18 +1,49 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './core/pages/login/login.component';
 import { SignupComponent } from './core/pages/signup/signup.component';
-import { DashboardComponent } from './core/pages/dashboard/dashboard.component';
 import { StoreComponent } from './core/pages/store/store.component';
+import { DashboardComponent } from './core/pages/dashboard/dashboard.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-   { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  {
-  path: 'products',
-  loadComponent: () => import('./core/pages/category-list/category-list.component').then(m => m.CategoryListComponent)
-},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'store', component: StoreComponent },
+
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./core/pages/dashboard/dashboard-home.component').then(
+            (m) => m.DashboardHomeComponent
+          ),
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./core/pages/category-list/category-list.component').then(
+            (m) => m.CategoryListComponent
+          ),
+      },
+      // {
+      //   path: 'orders',
+      //   loadComponent: () =>
+      //     import('./core/pages/orders/orders.component').then(
+      //       (m) => m.OrdersComponent
+      //     ),
+      // },
+      // {
+      //   path: 'profile',
+      //   loadComponent: () =>
+      //     import('./core/pages/profile/profile.component').then(
+      //       (m) => m.ProfileComponent
+      //     ),
+      // },
+    ],
+  },
 ];

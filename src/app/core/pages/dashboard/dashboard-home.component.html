@@ -1,1 +1,64 @@
-<p>dashboard-home works!</p>
+<section class="content">
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <mat-icon>shopping_cart</mat-icon>
+      <div>
+        <h3>120</h3>
+        <p>Orders</p>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon>attach_money</mat-icon>
+      <div>
+        <h3>₹58,300</h3>
+        <p>Total Sales</p>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon>inventory</mat-icon>
+      <div>
+        <h3>48</h3>
+        <p>Products</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="action-bar">
+    <button mat-flat-button color="primary" routerLink="/products">
+      <mat-icon>add</mat-icon> Add New Product
+    </button>
+  </div>
+
+  <mat-card class="recent-orders">
+    <h2>Recent Orders</h2>
+    <table mat-table [dataSource]="orders" class="mat-elevation-z2">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Order ID</th>
+        <td mat-cell *matCellDef="let order">{{ order.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="customer">
+        <th mat-header-cell *matHeaderCellDef>Customer</th>
+        <td mat-cell *matCellDef="let order">{{ order.customer }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let order">₹{{ order.total }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let order">
+          <span class="status" [ngClass]="order.status">{{ order.status }}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card>
+</section>
