@@ -1,11 +1,40 @@
-<div class="category-detail">
-  <h2>Category Details (ID: {{ categoryId }})</h2>
+<mat-card class="category-detail-card" *ngIf="category">
+  <div class="header">
+    <h2>{{ category.name }}</h2>
+    <div class="actions">
+      <button mat-icon-button color="primary" (click)="enableEdit()" *ngIf="!editMode">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteCategory()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
 
-  <button mat-raised-button color="primary">
-    <mat-icon>edit</mat-icon> Edit Product
-  </button>
+  <div class="image-container" *ngIf="category.coverImage">
+    <img [src]="category.coverImage" alt="{{ category.name }}" />
+  </div>
 
-  <button mat-raised-button color="warn" (click)="deleteCategory()">
-    <mat-icon>delete</mat-icon> Delete Product
-  </button>
-</div>
+  <form [formGroup]="categoryForm" *ngIf="editMode" class="edit-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Category Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-stroked-button color="primary" (click)="saveChanges()">
+        Save
+      </button>
+      <button mat-button (click)="editMode = false">Cancel</button>
+    </div>
+  </form>
+
+  <div class="details" *ngIf="!editMode">
+    <p><strong>Description:</strong> {{ category.description || 'No description provided' }}</p>
+  </div>
+</mat-card>

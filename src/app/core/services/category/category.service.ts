@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, doc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { from } from 'rxjs';
@@ -28,4 +28,22 @@ export class CategoryService {
       createdAt: new Date(),
     });
   }
+
+
+    async getCategoryById(id: string) {
+    const ref = doc(this.firestore, 'categories', id);
+    const snap = await getDoc(ref);
+    return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+  }
+
+  async updateCategory(id: string, data: any) {
+    const ref = doc(this.firestore, 'categories', id);
+    await updateDoc(ref, data);
+  }
+
+  async deleteCategory(id: string) {
+    const ref = doc(this.firestore, 'categories', id);
+    await deleteDoc(ref);
+  }
+
 }
