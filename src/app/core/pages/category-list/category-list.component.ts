@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { CategoryService } from '../../services/category/category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
+import { GlobalLoaderComponent } from "../../shared/global-loader/global-loader.component";
 
 @Component({
   selector: 'app-category-list',
@@ -17,7 +18,8 @@ import { AddCategoryDialogComponent } from './add-category-dialog/add-category-d
     MatIconModule,
     MatIconModule,
     RouterModule,
-  ],
+    GlobalLoaderComponent
+],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
 })

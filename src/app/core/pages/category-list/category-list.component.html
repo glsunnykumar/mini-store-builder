@@ -6,8 +6,7 @@
     </button>
   </div>
 
-  <div *ngIf="loading" class="loading">Loading categories...</div>
-
+      <app-global-loader [loading]="loading" />
   <div class="category-grid" *ngIf="!loading && categories.length > 0">
     <mat-card *ngFor="let cat of categories" class="category-card" [routerLink]="[cat.id]">
       <img *ngIf="cat.coverImage" [src]="cat.coverImage" alt="{{cat.name}}" />
