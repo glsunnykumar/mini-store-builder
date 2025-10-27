@@ -16,6 +16,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../services/category/category.service';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
 import { GlobalLoaderComponent } from "../../../shared/global-loader/global-loader.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-category-detail',
@@ -28,6 +29,7 @@ import { GlobalLoaderComponent } from "../../../shared/global-loader/global-load
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
+    MatTooltipModule,
     GlobalLoaderComponent
 ],
   templateUrl: './category-detail.component.html',

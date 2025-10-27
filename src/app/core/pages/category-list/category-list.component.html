@@ -1,12 +1,12 @@
 <div class="category-page">
   <div class="header">
-    <h2>Product Categories</h2>
+    <h2>Items Categories</h2>
     <button mat-flat-button color="primary" (click)="openAddCategoryDialog()">
       <mat-icon>add</mat-icon> Add Category
     </button>
   </div>
 
-      <app-global-loader [loading]="loading" />
+  <app-global-loader [loading]="loading" />
   <div class="category-grid" *ngIf="!loading && categories.length > 0">
     <mat-card *ngFor="let cat of categories" class="category-card" [routerLink]="[cat.id]">
       <img *ngIf="cat.coverImage" [src]="cat.coverImage" alt="{{cat.name}}" />

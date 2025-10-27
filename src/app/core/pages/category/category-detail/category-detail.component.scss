@@ -3,6 +3,13 @@
   margin: 2rem auto;
   padding: 1.5rem;
   border-radius: 12px;
+    background: #ffffff;
+  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 25px rgba(63, 81, 181, 0.15);
+  }
 
   .header {
     display: flex;
@@ -11,8 +18,9 @@
     margin-bottom: 1rem;
 
     h2 {
-      font-weight: 600;
+     font-weight: 600;
       color: #3f51b5;
+      font-size: 1.4rem;
     }
 
     .actions {
@@ -25,11 +33,23 @@
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;
+    align-items: center;
+    background: #f5f6fa;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
 
     img {
-      max-width: 100%;
-      border-radius: 8px;
+       width: 80%;
+      max-width: 320px;
+      height: auto;
+      border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.03);
+      }
     }
   }
 

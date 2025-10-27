@@ -43,17 +43,30 @@
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
 
-   
-
-    <div class="form-actions">
-      <button mat-stroked-button color="primary" (click)="saveChanges()">
-        Save
+       <div class="form-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="saveChanges()"
+        [disabled]="uploadInProgress"
+      >
+        {{ uploadInProgress ? 'Saving...' : 'Save Changes' }}
       </button>
       <button mat-button (click)="editMode = false">Cancel</button>
     </div>
+   
   </form>
 
-  <div class="details" *ngIf="!editMode">
-    <p><strong>Description:</strong> {{ category.description || 'No description provided' }}</p>
+ <div class="details" *ngIf="!editMode">
+    <h3 class="category-name">{{ category.name }}</h3>
+    <p
+      class="category-description"
+      [matTooltip]="category.description"
+      matTooltipPosition="above"
+    >
+      {{ category.description ? (category.description.length > 100 ? (category.description | slice:0:100) + '...' : category.description) : 'No description provided' }}
+    </p>
   </div>
+
+
 </mat-card>
