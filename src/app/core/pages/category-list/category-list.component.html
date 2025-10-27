@@ -1,21 +1,49 @@
 <div class="category-page">
   <div class="header">
-    <h2>Items Categories</h2>
+    <h2>Item Categories</h2>
     <button mat-flat-button color="primary" (click)="openAddCategoryDialog()">
       <mat-icon>add</mat-icon> Add Category
     </button>
   </div>
 
   <app-global-loader [loading]="loading" />
+
   <div class="category-grid" *ngIf="!loading && categories.length > 0">
-    <mat-card *ngFor="let cat of categories" class="category-card" [routerLink]="[cat.id]">
-      <img *ngIf="cat.coverImage" [src]="cat.coverImage" alt="{{cat.name}}" />
+    <mat-card
+      *ngFor="let cat of categories"
+      class="category-card"
+      [routerLink]="[cat.id]"
+    >
+      <div class="image-container">
+        <img
+          *ngIf="cat.coverImage"
+          [src]="cat.coverImage"
+          alt="{{ cat.name }}"
+          class="category-image"
+        />
+      </div>
+
       <div class="info">
-        <h3>{{ cat.name }}</h3>
-        <p>{{ cat.description }}</p>
+        <h3 class="category-name">{{ cat.name }}</h3>
+
+        <p
+          class="category-description"
+          [matTooltip]="cat.description"
+          matTooltipPosition="above"
+        >
+          {{
+            cat.description
+              ? (cat.description.length > 100
+                ? (cat.description | slice: 0:100) + '...'
+                : cat.description)
+              : 'No description provided'
+          }}
+        </p>
       </div>
     </mat-card>
   </div>
 
-  <p *ngIf="!loading && categories.length === 0" class="no-data">No categories added yet.</p>
+  <p *ngIf="!loading && categories.length === 0" class="no-data">
+    No categories added yet.
+  </p>
 </div>

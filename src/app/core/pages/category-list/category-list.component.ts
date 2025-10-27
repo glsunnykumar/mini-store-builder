@@ -8,6 +8,7 @@ import { CategoryService } from '../../services/category/category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { GlobalLoaderComponent } from "../../shared/global-loader/global-loader.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-category-list',
@@ -18,6 +19,7 @@ import { GlobalLoaderComponent } from "../../shared/global-loader/global-loader.
     MatIconModule,
     MatIconModule,
     RouterModule,
+    MatTooltipModule,
     GlobalLoaderComponent
 ],
   templateUrl: './category-list.component.html',
