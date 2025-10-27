@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../services/category/category.service';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
+import { GlobalLoaderComponent } from "../../../shared/global-loader/global-loader.component";
 
 @Component({
   selector: 'app-category-detail',
@@ -27,7 +28,8 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from '@ang
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-  ],
+    GlobalLoaderComponent
+],
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.scss',
 })
@@ -38,7 +40,8 @@ categoryId!: string;
   newImageFile: File | null = null;
   uploadInProgress = false;
   categoryForm: FormGroup;
-   newImagePreview: string | ArrayBuffer | null = null;
+  newImagePreview: string | ArrayBuffer | null = null;
+  loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +76,7 @@ categoryId!: string;
   }
 
     onFileSelected(event: any) {
+    this.loading = true;
     const file = event.target.files[0];
     if (file) {
       this.newImageFile = file;
@@ -81,6 +85,7 @@ categoryId!: string;
       const reader = new FileReader();
       reader.onload = () => {
         this.newImagePreview = reader.result;
+        this.loading = false;
       };
       reader.readAsDataURL(file);
     }
@@ -91,6 +96,7 @@ categoryId!: string;
     
     if (this.categoryForm.invalid) return;
     this.uploadInProgress = true;
+    this.loading = true;
 
     let updatedData = this.categoryForm.value;
 
@@ -122,8 +128,11 @@ categoryId!: string;
       duration: 2000,
     });
     this.uploadInProgress = false;
+    this.loading = false;
     this.editMode = false;
-    await this.loadCategory();
+     await this.loadCategory();
+    this.router.navigate(['/dashboard/category']);
+   
   }
 
   async deleteCategory() {
@@ -147,7 +156,7 @@ categoryId!: string;
       this.snackBar.open('Category deleted successfully!', 'Close', {
         duration: 2000,
       });
-      this.router.navigate(['/dashboard/products']);
+      this.router.navigate(['/dashboard/category']);
     }
   }
 }
