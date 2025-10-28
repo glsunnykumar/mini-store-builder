@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { collection, Firestore } from 'firebase/firestore';
-import { collectionData } from '@angular/fire/firestore';
+import { collectionData ,Firestore,collection } from '@angular/fire/firestore';
+import { AddProductDialogComponent } from '../product-add/add-product-dialog/add-product-dialog.component';
 
 @Component({
   selector: 'app-product-list',

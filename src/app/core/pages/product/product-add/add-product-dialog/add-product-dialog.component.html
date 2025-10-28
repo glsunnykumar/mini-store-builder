@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Add New Product</h2>
+
+<div class="dialog-content">
+
+  <!-- 🔹 Category Dropdown -->
+  <mat-form-field appearance="outline">
+    <mat-label>Select Category</mat-label>
+    <mat-select [(ngModel)]="productData.categoryId">
+      <mat-option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="outline">
+    <mat-label>Product Name</mat-label>
+    <input matInput [(ngModel)]="productData.name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="productData.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price (₹)</mat-label>
+    <input matInput type="number" [(ngModel)]="productData.price" />
+  </mat-form-field>
+
+  <div class="image-upload">
+    <label class="upload-label">
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+      <mat-icon>upload</mat-icon> Choose Image
+    </label>
+
+    <div class="preview" *ngIf="imagePreview">
+      <img [src]="imagePreview" alt="Preview" />
+    </div>
+  </div>
+</div>
+
+<div class="dialog-actions">
+  <button mat-stroked-button (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="saveProduct()" [disabled]="uploading">
+    {{ uploading ? 'Saving...' : 'Save Product' }}
+  </button>
+</div>
