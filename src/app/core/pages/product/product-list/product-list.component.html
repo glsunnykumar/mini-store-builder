@@ -1,0 +1,27 @@
+<div class="product-page">
+  <div class="header">
+    <h2>Products</h2>
+    <button mat-flat-button color="primary" (click)="openAddProductDialog()">
+      <mat-icon>add</mat-icon> Add Product
+    </button>
+  </div>
+
+  <app-global-loader [loading]="loading" />
+
+  <div class="product-grid" *ngIf="!loading && products.length > 0">
+    <mat-card *ngFor="let p of products" class="product-card">
+      <div class="image-container">
+        <img *ngIf="p.coverImage" [src]="p.coverImage" alt="{{ p.name }}" />
+      </div>
+      <div class="info">
+        <h3>{{ p.name }}</h3>
+        <p>{{ p.description }}</p>
+        <div class="price">₹{{ p.price }}</div>
+      </div>
+    </mat-card>
+  </div>
+
+  <p *ngIf="!loading && products.length === 0" class="no-data">
+    No products added yet.
+  </p>
+</div>

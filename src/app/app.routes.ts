@@ -23,7 +23,7 @@ export const routes: Routes = [
             (m) => m.DashboardHomeComponent
           ),
       },
-     {
+      {
         path: 'category',
         children: [
           {
@@ -36,12 +36,32 @@ export const routes: Routes = [
           {
             path: ':id',
             loadComponent: () =>
-              import('./core/pages/category/category-detail/category-detail.component').then(
-                (m) => m.CategoryDetailComponent
-              ),
+              import(
+                './core/pages/category/category-detail/category-detail.component'
+              ).then((m) => m.CategoryDetailComponent),
           },
         ],
       },
+      {
+        path: 'product',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./core/pages/product/product-list/product-list.component').then(
+                (m) => m.ProductListComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import(
+                './core/pages/category/category-detail/category-detail.component'
+              ).then((m) => m.CategoryDetailComponent),
+          },
+        ],
+      },
+
       // {
       //   path: 'orders',
       //   loadComponent: () =>
