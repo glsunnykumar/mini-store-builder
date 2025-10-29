@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { collectionData ,Firestore,collection } from '@angular/fire/firestore';
 import { AddProductDialogComponent } from '../product-add/add-product-dialog/add-product-dialog.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -17,6 +18,7 @@ import { AddProductDialogComponent } from '../product-add/add-product-dialog/add
     MatCardModule,
     MatIconModule,
     MatDialogModule,
+    RouterModule
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
@@ -47,10 +49,27 @@ export class ProductListComponent {
     });
   }
 
+
+  openEditDialog(productId: string) {
+  const dialogRef = this.dialog.open(AddProductDialogComponent, {
+    width: '600px',
+    maxHeight: '90vh',
+    data: { productId }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.loadProducts(); // refresh list
+    }
+  });
+}
+
    /** 🔹 Open Add Product Dialog */
-  openAddProductDialog() {
+  openAddProductDialog(productId?: string) {
     const dialogRef = this.dialog.open(AddProductDialogComponent, {
       width: '500px',
+      maxHeight :'90vh',
+      data: { productId: productId || null },
       disableClose: true,
     });
 

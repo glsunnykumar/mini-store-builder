@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, serverTimestamp, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, serverTimestamp, updateDoc, getDoc } from '@angular/fire/firestore';
 import { deleteObject, getDownloadURL, uploadBytes ,ref , Storage} from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 
@@ -16,39 +16,48 @@ export class ProductService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
 
+
+    async addProduct(productData: any, file: File | null) {
+    let imageUrl = '';
+
+    if (file) {
+      const filePath = `products/${Date.now()}_${file.name}`;
+      const fileRef = ref(this.storage, filePath);
+      await uploadBytes(fileRef, file);
+      imageUrl = await getDownloadURL(fileRef);
+    }
+
+    const productRef = collection(this.firestore, 'products');
+    await addDoc(productRef, { ...productData, imageUrl, createdAt: new Date() });
+  }
+
   /** 🟢 Fetch all products */
   getProducts(): Observable<any[]> {
     const productsRef = collection(this.firestore, 'products');
     return collectionData(productsRef, { idField: 'id' }) as Observable<any[]>;
   }
 
-  /** 🟢 Add product with image upload */
-  async addProduct(productData: any, imageFile?: File) {
-    let imageUrl = '';
+ 
+  async updateProduct(productId: string, productData: any, file: File | null) {
+    const docRef = doc(this.firestore, `products/${productId}`);
 
-    if (imageFile) {
-      const filePath = `products/${Date.now()}_${imageFile.name}`;
-      const storageRef = ref(this.storage, filePath);
-      await uploadBytes(storageRef, imageFile);
-      imageUrl = await getDownloadURL(storageRef);
+    let imageUrl = productData.imageUrl;
+
+    if (file) {
+      const filePath = `products/${Date.now()}_${file.name}`;
+      const fileRef = ref(this.storage, filePath);
+      await uploadBytes(fileRef, file);
+      imageUrl = await getDownloadURL(fileRef);
     }
 
-    const productsRef = collection(this.firestore, 'products');
-    const productDoc = {
-      ...productData,
-      coverImage: imageUrl,
-      createdAt: serverTimestamp(),
-    };
-
-    return await addDoc(productsRef, productDoc);
+    await updateDoc(docRef, { ...productData, imageUrl, updatedAt: new Date() });
   }
 
-  /** 🟢 Update product */
-  async updateProduct(productId: string, updatedData: any) {
-    const productRef = doc(this.firestore, `products/${productId}`);
-    await updateDoc(productRef, updatedData);
+  async getProductById(productId: string) {
+    const docRef = doc(this.firestore, `products/${productId}`);
+    const snapshot = await getDoc(docRef);
+    return snapshot.exists() ? snapshot.data() : null;
   }
-
   /** 🔴 Delete product (and optional image) */
   async deleteProduct(productId: string, imageUrl?: string) {
     if (imageUrl) {

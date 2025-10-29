@@ -53,13 +53,13 @@ export const routes: Routes = [
                 (m) => m.ProductListComponent
               ),
           },
-          {
-            path: ':id',
-            loadComponent: () =>
-              import(
-                './core/pages/category/category-detail/category-detail.component'
-              ).then((m) => m.CategoryDetailComponent),
-          },
+          // {
+          //   path: ':id',
+          //   loadComponent: () =>
+          //     import(
+          //       './core/pages/product/product-add/add-product-dialog/add-product-dialog.component'
+          //     ).then((m) => m.AddProductDialogComponent),
+          // },
         ],
       },
 

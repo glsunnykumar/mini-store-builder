@@ -9,9 +9,11 @@
   <app-global-loader [loading]="loading" />
 
   <div class="product-grid" *ngIf="!loading && products.length > 0">
-    <mat-card *ngFor="let p of products" class="product-card">
+    <mat-card *ngFor="let p of products" class="product-card"
+    (click)="openAddProductDialog(p.id)" 
+    >
       <div class="image-container">
-        <img *ngIf="p.coverImage" [src]="p.coverImage" alt="{{ p.name }}" />
+        <img *ngIf="p.coverImage" [src]=  "p.coverImage" alt="{{ p.name }}" />
       </div>
       <div class="info">
         <h3>{{ p.name }}</h3>
