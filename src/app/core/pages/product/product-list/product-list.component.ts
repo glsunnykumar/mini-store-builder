@@ -40,6 +40,7 @@ export class ProductListComponent {
     collectionData(productsRef, { idField: 'id' }).subscribe({
       next: (data) => {
         this.products = data;
+        console.log(this.products);
         this.loading = false;
       },
       error: (err) => {

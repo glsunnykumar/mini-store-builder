@@ -1,48 +1,70 @@
-<h2 mat-dialog-title>Add New Product</h2>
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Edit Product' : 'Add New Product' }}
+</h2>
 
 <div class="dialog-content">
 
-  <!-- 🔹 Category Dropdown -->
-  <mat-form-field appearance="outline">
-    <mat-label>Select Category</mat-label>
-    <mat-select [(ngModel)]="productData.categoryId">
-      <mat-option *ngFor="let cat of categories" [value]="cat.id">
-        {{ cat.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+   <app-global-loader [loading]="loading" />
+  <form [formGroup]="productForm" class="form-container">
 
+    <!-- 🔹 Category Dropdown -->
+    <mat-form-field appearance="outline">
+      <mat-label>Select Category</mat-label>
+      <mat-select formControlName="categoryId">
+        <mat-option *ngFor="let cat of categories" [value]="cat.id">
+          {{ cat.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Product Name</mat-label>
-    <input matInput [(ngModel)]="productData.name" />
-  </mat-form-field>
+    <!-- 🔹 Product Name -->
+    <mat-form-field appearance="outline">
+      <mat-label>Product Name</mat-label>
+      <input matInput placeholder="Enter product name" formControlName="name" />
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Description</mat-label>
-    <textarea matInput rows="3" [(ngModel)]="productData.description"></textarea>
-  </mat-form-field>
+    <!-- 🔹 Description -->
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Enter product description"
+        rows="3"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Price (₹)</mat-label>
-    <input matInput type="number" [(ngModel)]="productData.price" />
-  </mat-form-field>
+    <!-- 🔹 Price -->
+    <mat-form-field appearance="outline">
+      <mat-label>Price (₹)</mat-label>
+      <input matInput type="number" placeholder="Enter price" formControlName="price" />
+    </mat-form-field>
 
-  <div class="image-upload">
-    <label class="upload-label">
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
-      <mat-icon>upload</mat-icon> Choose Image
-    </label>
+    <!-- 🔹 Image Upload -->
+    <div class="upload">
+      <label class="upload-label">
+        <mat-icon>upload</mat-icon>
+        <span>{{ selectedFile ? selectedFile.name : 'Choose Image' }}</span>
+        <input type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
+      </label>
 
-    <div class="preview" *ngIf="imagePreview">
-      <img [src]="imagePreview" alt="Preview" />
+      <!-- Image Preview -->
+      <div class="preview" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Preview" />
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 
+<!-- 🔹 Footer Buttons -->
 <div class="dialog-actions">
-  <button mat-stroked-button (click)="closeDialog()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="saveProduct()" [disabled]="uploading">
-    {{ uploading ? 'Saving...' : 'Save Product' }}
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="saveProduct()"
+    [disabled]="productForm.invalid || loading"
+  >
+    {{ isEditMode ? 'Update Product' : 'Save Product' }}
   </button>
 </div>
