@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailDialogComponent } from '../product/product-detail-dialog/product-detail-dialog.component';
 import { CartService } from '../../services/cart/cart.service';
+import { CartDialogComponent } from '../cart/cart-dialog/cart-dialog.component';
 
 @Component({
   selector: 'app-store',
@@ -89,6 +90,8 @@ export class StoreComponent {
     });
   }
 
+
+
   openProductDetail(product: any) {
   this.dialog.open(ProductDetailDialogComponent, {
     data: product,
@@ -98,10 +101,12 @@ export class StoreComponent {
   });
 }
 
-openCart() {
-  const items = this.cartService.getItems();
-  console.log('🛒 Cart items:', items);
-  // Later you can navigate to /cart or open a Cart Dialog
+  openCart() {
+  this.dialog.open(CartDialogComponent, {
+    width: '500px',
+    maxWidth: '95vw',
+    panelClass: 'cart-dialog'
+  });
 }
 
 
