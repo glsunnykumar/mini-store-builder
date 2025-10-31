@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import {CommonModule, TitleCasePipe} from '@angular/common';
 import { CategoryService } from '../../services/category/category.service';
 import { firstValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-store',
@@ -22,7 +23,7 @@ import { firstValueFrom } from 'rxjs';
     MatIconModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    TitleCasePipe
+    FormsModule
   ],
   templateUrl: './store.component.html',
   styleUrl: './store.component.scss',
@@ -33,6 +34,8 @@ export class StoreComponent {
   filteredProducts: any[] = [];
   selectedCategoryId: string | null = null;
   loading = false;
+    searchQuery = '';
+  cartCount = 0; // ✅ will integrate later with local storage
 
     constructor(
     private categoryService: CategoryService,
@@ -61,6 +64,21 @@ export class StoreComponent {
     this.filteredProducts = catId
       ? this.products.filter(p => p.categoryId === catId)
       : this.products;
+  }
+
+
+   /** ✅ Filter based on search + category */
+  onSearchChange() {
+    this.applyFilters();
+  }
+
+  private applyFilters() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredProducts = this.products.filter((p) => {
+      const matchesCategory = this.selectedCategoryId ? p.categoryId === this.selectedCategoryId : true;
+      const matchesSearch = p.name?.toLowerCase().includes(query) || p.description?.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
   }
 
 
