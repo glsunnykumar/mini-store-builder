@@ -1,5 +1,6 @@
 /* =============== 🌟 STORE PAGE STYLING 🌟 =============== */
 /* =================== 🌟 STORE NAVBAR =================== */
+/* 🌟 STORE HEADER BAR */
 .store-header {
   display: flex;
   align-items: center;
@@ -11,31 +12,33 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
+  flex-wrap: wrap;
 
   .logo-section {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 
-    .brand-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
     mat-icon {
       font-size: 26px;
     }
+
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
   }
 
+  /* 🔍 Search bar styling */
   .search-container {
     display: flex;
     align-items: center;
     background: white;
     border-radius: 25px;
     padding: 0.25rem 0.75rem;
-    width: 50%;
+    width: 45%;
     max-width: 400px;
     color: #333;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -56,93 +59,56 @@
     }
   }
 
+  /* 🛒 Cart section */
   .cart-section {
     position: relative;
 
-    button {
+    .cart-btn {
       color: white;
+      position: relative;
+      transition: transform 0.2s ease-in-out;
 
-      mat-icon {
-        font-size: 26px;
+      &:hover {
+        transform: scale(1.1);
       }
 
       .cart-count {
         position: absolute;
-        top: 2px;
-        right: 2px;
-        background: #ff5252;
+        top: 0;
+        right: 0;
+        background: #ff4081;
         color: white;
         border-radius: 50%;
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         width: 16px;
         height: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
       }
     }
   }
-
-  .floating-cart {
-  position: fixed;
-  top: 15px; /* 👈 moved from bottom to top */
-  right: 20px;
-  background: #3f51b5; /* Indigo */
-  color: #ffffff;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
-  z-index: 1100;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(63, 81, 181, 0.4);
-  }
-
-  mat-icon {
-    font-size: 24px;
-  }
-
-  .badge {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: #ff4081; /* Material pink accent */
-    color: #fff;
-    border-radius: 50%;
-    font-size: 0.7rem;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  }
 }
 
-/* 📱 Adjust for mobile view */
+/* 📱 Responsive for mobile */
 @media (max-width: 768px) {
-  .floating-cart {
-    top: 10px;
-    right: 10px;
-    width: 44px;
-    height: 44px;
+  .store-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
 
-    .badge {
-      top: 4px;
-      right: 4px;
-      width: 16px;
-      height: 16px;
-      font-size: 0.65rem;
+    .search-container {
+      width: 100%;
+      max-width: none;
+    }
+
+    .cart-section {
+      align-self: flex-end;
+      margin-top: 0.25rem;
     }
   }
-}
 }
 
 /* 🔹 Mobile Responsive */
