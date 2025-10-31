@@ -59,6 +59,19 @@
 <!-- 🔹 Footer Buttons -->
 <div class="dialog-actions">
   <button mat-stroked-button (click)="cancel()">Cancel</button>
+
+  <!-- 🔹 Show Delete only in Edit Mode -->
+  <button
+    *ngIf="isEditMode"
+    mat-flat-button
+    color="warn"
+    (click)="deleteProduct()"
+    [disabled]="loading"
+  >
+    Delete Product
+  </button>
+
+
   <button
     mat-flat-button
     color="primary"

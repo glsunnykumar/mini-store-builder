@@ -131,6 +131,26 @@ export class AddProductDialogComponent implements OnInit {
     }
   }
 
+
+  async deleteProduct() {
+  if (!this.isEditMode || !this.productId) return;
+
+  const confirmDelete = confirm('Are you sure you want to delete this product?');
+  if (!confirmDelete) return;
+
+  try {
+    this.loading = true;
+    await this.productService.deleteProduct(this.productId);
+    alert('Product deleted successfully!');
+    this.dialogRef.close(true); // close dialog and refresh list
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    alert('Failed to delete product. Please try again.');
+  } finally {
+    this.loading = false;
+  }
+}
+
   cancel(): void {
     this.dialogRef.close(false);
   }
