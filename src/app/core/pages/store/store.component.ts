@@ -12,6 +12,8 @@ import {CommonModule, TitleCasePipe} from '@angular/common';
 import { CategoryService } from '../../services/category/category.service';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailDialogComponent } from '../product/product-detail-dialog/product-detail-dialog.component';
 
 @Component({
   selector: 'app-store',
@@ -39,7 +41,8 @@ export class StoreComponent {
 
     constructor(
     private categoryService: CategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+     private dialog: MatDialog
   ) {}
 
    async ngOnInit() {
@@ -80,6 +83,15 @@ export class StoreComponent {
       return matchesCategory && matchesSearch;
     });
   }
+
+  openProductDetail(product: any) {
+  this.dialog.open(ProductDetailDialogComponent, {
+    data: product,
+    width: '600px',
+    maxWidth: '95vw',
+    panelClass: 'product-dialog'
+  });
+}
 
 
 }

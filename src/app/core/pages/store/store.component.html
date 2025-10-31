@@ -52,8 +52,13 @@
   </div>
 
   <!-- 🔹 Product Grid -->
-  <div class="product-grid" *ngIf="filteredProducts.length > 0; else noProducts">
-    <mat-card class="product-card" *ngFor="let p of filteredProducts">
+  <div class="product-grid" *ngIf="filteredProducts.length > 0; else noProducts"
+    
+    >
+    <mat-card class="product-card" *ngFor="let p of filteredProducts"
+      (click)="openProductDetail(p)"
+
+    >
       <img [src]="p.imageUrl" alt="{{ p.name }}" class="product-image" />
       <div class="product-info">
         <h3>{{ p.name }}</h3>

@@ -1,0 +1,19 @@
+<mat-card class="product-detail-card">
+  <div class="image-section">
+    <img [src]="product.imageUrl || product.coverImage" alt="{{ product.name }}" />
+  </div>
+
+  <div class="info-section">
+    <h2>{{ product.name }}</h2>
+    <p class="category">{{ product.categoryName || 'Uncategorized' }}</p>
+    <h3 class="price">₹{{ product.price }}</h3>
+    <p class="description">{{ product.description }}</p>
+
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Close</button>
+      <button mat-flat-button color="accent" (click)="addToCart()">
+        <mat-icon>add_shopping_cart</mat-icon> Add to Cart
+      </button>
+    </div>
+  </div>
+</mat-card>
