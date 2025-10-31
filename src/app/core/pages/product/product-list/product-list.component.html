@@ -13,7 +13,7 @@
     (click)="openAddProductDialog(p.id)" 
     >
       <div class="image-container">
-        <img *ngIf="p.coverImage" [src]=  "p.coverImage" alt="{{ p.name }}" />
+        <img *ngIf="p.imageUrl" [src]=  "p.imageUrl" alt="{{ p.name }}" />
       </div>
       <div class="info">
         <h3>{{ p.name }}</h3>

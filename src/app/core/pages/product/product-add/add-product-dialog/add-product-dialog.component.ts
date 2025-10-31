@@ -38,6 +38,7 @@ export class AddProductDialogComponent implements OnInit {
   isEditMode = false;
   productId: string | null = null;
   loading = true;
+  imageDbUrl :string ='';
 
   constructor(
     private fb: FormBuilder,
@@ -65,7 +66,7 @@ export class AddProductDialogComponent implements OnInit {
 
     // If productId exists, load existing product
     if (this.isEditMode && this.productId) {
-      this.loadProductData(this.productId);
+     await this.loadProductData(this.productId);
     }
     this.loading = false;
   }
@@ -79,7 +80,10 @@ export class AddProductDialogComponent implements OnInit {
   async loadProductData(id: string) {
     try {
       const product = await this.productService.getProductById(id);
+     
       if (product) {
+        this.imageDbUrl = product['imageUrl'];
+        console.log('the image is uploaded at' , this.imageDbUrl);
         this.productForm.patchValue({
           categoryId: product['categoryId'],
           name: product['name'],
@@ -140,7 +144,7 @@ export class AddProductDialogComponent implements OnInit {
 
   try {
     this.loading = true;
-    await this.productService.deleteProduct(this.productId);
+    await this.productService.deleteProduct(this.productId,this.imageDbUrl);
     alert('Product deleted successfully!');
     this.dialogRef.close(true); // close dialog and refresh list
   } catch (error) {

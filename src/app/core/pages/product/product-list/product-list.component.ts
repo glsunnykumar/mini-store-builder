@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
-    private firestore = inject(Firestore);
+  private firestore = inject(Firestore);
   private dialog = inject(MatDialog);
 
   products: any[] = [];
