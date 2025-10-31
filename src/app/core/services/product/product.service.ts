@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, serverTimestamp, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, serverTimestamp, updateDoc, getDoc, getDocs } from '@angular/fire/firestore';
 import { deleteObject, getDownloadURL, uploadBytes ,ref , Storage} from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 
@@ -29,6 +29,15 @@ export class ProductService {
 
     const productRef = collection(this.firestore, 'products');
     await addDoc(productRef, { ...productData, imageUrl, createdAt: new Date() });
+  }
+
+   /** ✅ Get all products (used in Store & Admin Dashboard) */
+  async getAllProducts() {
+    const snapshot = await getDocs(collection(this.firestore, 'products'));
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
   }
 
   /** 🟢 Fetch all products */

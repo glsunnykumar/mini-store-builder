@@ -1,16 +1,59 @@
-<mat-toolbar color="primary">{{ storeName | titlecase }}'s Store</mat-toolbar>
+<div class="store-container" *ngIf="!loading; else loadingState">
 
-<div class="product-grid">
-  <mat-card *ngFor="let p of products" class="product-card">
-    <img mat-card-image [src]="p.imageUrl || 'assets/no-image.png'" alt="{{ p.name }}">
-    <mat-card-content>
-      <h3>{{ p.name }}</h3>
-      <p>₹{{ p.price }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <a mat-button color="primary" href="https://wa.me/919999999999?text=I'm interested in {{p.name}}">
-        Buy Now
-      </a>
-    </mat-card-actions>
-  </mat-card>
+  <!-- 🔹 Category Slider -->
+  <div class="category-slider">
+    <button
+      mat-button
+      class="category-item all"
+      [class.active]="!selectedCategoryId"
+      (click)="filterByCategory(null)"
+    >
+      <mat-icon>grid_view</mat-icon> All
+    </button>
+
+    <button
+      mat-button
+      *ngFor="let cat of categories"
+      class="category-item"
+      [class.active]="selectedCategoryId === cat.id"
+      (click)="filterByCategory(cat.id)"
+    >
+      <img *ngIf="cat.coverImage" [src]="cat.coverImage" alt="{{ cat.name }}" />
+      <span>{{ cat.name }}</span>
+    </button>
+  </div>
+
+  <!-- 🔹 Product Grid -->
+  <div class="product-grid" *ngIf="filteredProducts.length > 0; else noProducts">
+    <mat-card class="product-card" *ngFor="let p of filteredProducts">
+      <img [src]="p.imageUrl" alt="{{ p.name }}" class="product-image" />
+      <div class="product-info">
+        <h3>{{ p.name }}</h3>
+        <p>{{ p.description | slice:0:60 }}{{ p.description.length > 60 ? '…' : '' }}</p>
+        <div class="product-footer">
+          <span class="price">₹{{ p.price }}</span>
+          <button mat-icon-button color="primary" title="Add to Cart">
+            <mat-icon>shopping_cart</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
 </div>
+
+<!-- 🔹 Empty State -->
+<ng-template #noProducts>
+  <div class="empty">
+    <mat-icon>search_off</mat-icon>
+    <p>No products found for this category.</p>
+  </div>
+</ng-template>
+
+<!-- 🔹 Loader -->
+<ng-template #loadingState>
+  <div class="loading">
+    <mat-icon>hourglass_empty</mat-icon>
+    <p>Loading store...</p>
+  </div>
+</ng-template>

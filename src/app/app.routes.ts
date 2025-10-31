@@ -63,6 +63,7 @@ export const routes: Routes = [
         ],
       },
 
+        { path: 'store', component: StoreComponent }
       // {
       //   path: 'orders',
       //   loadComponent: () =>
