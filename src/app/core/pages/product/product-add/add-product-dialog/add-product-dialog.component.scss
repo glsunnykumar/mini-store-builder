@@ -87,6 +87,21 @@ mat-form-field {
   }
 }
 
+/* Category option layout inside dropdown */
+.category-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.option-image {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
 /* 🔹 Fixed Action Bar */
 .dialog-actions {
   position: sticky;

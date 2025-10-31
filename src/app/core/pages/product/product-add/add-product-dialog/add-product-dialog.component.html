@@ -12,7 +12,15 @@
       <mat-label>Select Category</mat-label>
       <mat-select formControlName="categoryId">
         <mat-option *ngFor="let cat of categories" [value]="cat.id">
-          {{ cat.name }}
+          <div class="category-option">
+            <img
+              *ngIf="cat.coverImage"
+              [src]="cat.coverImage"
+              alt="{{ cat.name }}"
+              class="option-image"
+            />
+            <span>{{ cat.name }}</span>
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>

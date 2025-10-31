@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { GlobalLoaderComponent } from "../../../../shared/global-loader/global-loader.component";
+import { list } from '@angular/fire/storage';
 
 
 @Component({
@@ -73,7 +74,8 @@ export class AddProductDialogComponent implements OnInit {
 
   /** Load all categories from Firestore */
   async loadCategories() {
-   this.categories = await firstValueFrom(this.categoryService.getCategories());
+     const list = await firstValueFrom(this.categoryService.getCategories());
+     this.categories = list.sort((a, b) => a['name'].localeCompare(b['name']));
   }
 
   /** Load product by ID and populate form */
