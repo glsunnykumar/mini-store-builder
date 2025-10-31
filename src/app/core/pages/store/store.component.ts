@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailDialogComponent } from '../product/product-detail-dialog/product-detail-dialog.component';
+import { CartService } from '../../services/cart/cart.service';
 
 @Component({
   selector: 'app-store',
@@ -42,13 +43,17 @@ export class StoreComponent {
     constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
-     private dialog: MatDialog
+     private dialog: MatDialog,
+      private cartService: CartService
   ) {}
 
    async ngOnInit() {
     this.loading = true;
     await this.loadCategories();
     await this.loadProducts();
+     this.cartService.cart$.subscribe(() => {
+    this.cartCount = this.cartService.getCartCount();
+  });
     this.loading = false;
   }
 
@@ -91,6 +96,12 @@ export class StoreComponent {
     maxWidth: '95vw',
     panelClass: 'product-dialog'
   });
+}
+
+openCart() {
+  const items = this.cartService.getItems();
+  console.log('🛒 Cart items:', items);
+  // Later you can navigate to /cart or open a Cart Dialog
 }
 
 
