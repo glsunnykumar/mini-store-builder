@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CartItem, CartService } from '../../../services/cart/cart.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-dialog',
@@ -19,7 +20,8 @@ export class CartDialogComponent {
 
   constructor(
     private dialogRef: MatDialogRef<CartDialogComponent>,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {
     this.loadCart();
   }
@@ -61,8 +63,8 @@ export class CartDialogComponent {
   }
 
     checkout() {
-    alert('🛍️ Checkout feature coming soon!');
-    this.dialogRef.close();
+  this.dialogRef.close();
+  this.router.navigate(['/checkout']);
   }
 
 }

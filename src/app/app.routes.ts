@@ -13,6 +13,13 @@ export const routes: Routes = [
   { path: 'store', component: StoreComponent },
 
   {
+    path: 'checkout',
+    loadComponent: () =>
+      import('./core/pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      ),
+  },
+  {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
@@ -49,9 +56,9 @@ export const routes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./core/pages/product/product-list/product-list.component').then(
-                (m) => m.ProductListComponent
-              ),
+              import(
+                './core/pages/product/product-list/product-list.component'
+              ).then((m) => m.ProductListComponent),
           },
           // {
           //   path: ':id',
@@ -63,7 +70,7 @@ export const routes: Routes = [
         ],
       },
 
-        { path: 'store', component: StoreComponent }
+      { path: 'store', component: StoreComponent },
       // {
       //   path: 'orders',
       //   loadComponent: () =>

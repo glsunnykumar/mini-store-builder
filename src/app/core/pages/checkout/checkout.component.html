@@ -1,0 +1,61 @@
+<mat-card class="checkout-card">
+  <h2>Checkout</h2>
+
+  <div class="checkout-layout">
+    <!-- Left: Customer Info -->
+    <div class="customer-section">
+      <h3>Customer Details</h3>
+
+      <form>
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput [(ngModel)]="customer.name" name="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input matInput type="tel" [(ngModel)]="customer.phone" name="phone" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea matInput [(ngModel)]="customer.address" name="address" required></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pincode</mat-label>
+          <input matInput type="text" [(ngModel)]="customer.pincode" name="pincode" />
+        </mat-form-field>
+      </form>
+    </div>
+
+    <!-- Right: Order Summary -->
+    <div class="summary-section">
+      <h3>Order Summary</h3>
+
+      <div *ngFor="let item of cartItems" class="summary-item">
+        <img [src]="item.imageUrl" alt="{{ item.name }}" />
+        <div class="info">
+          <p>{{ item.name }}</p>
+          <span>₹{{ item.price }} × {{ item.quantity }}</span>
+        </div>
+      </div>
+
+      <div class="total">
+        <h4>Total: ₹{{ total }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button color="warn" routerLink="/store">Cancel</button>
+    <button mat-flat-button color="primary" (click)="placeOrder()" [disabled]="loading">
+      <mat-icon>payment</mat-icon>
+      {{ loading ? 'Placing Order...' : 'Place Order' }}
+    </button>
+  </div>
+
+  <div *ngIf="success" class="success-msg">
+    🎉 Your order has been placed successfully!
+  </div>
+</mat-card>
