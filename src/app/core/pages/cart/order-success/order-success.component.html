@@ -1,0 +1,19 @@
+<div class="success-container">
+  <mat-icon class="check-icon">check_circle</mat-icon>
+  <h1>Thank You!</h1>
+  <p>Your order has been placed successfully.</p>
+
+  <div class="order-info">
+    <p><strong>Order ID:</strong> {{ orderId || 'N/A' }}</p>
+    <p *ngIf="total"><strong>Total Amount:</strong> ₹{{ total }}</p>
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="goToStore()">
+      <mat-icon>storefront</mat-icon> Continue Shopping
+    </button>
+    <button mat-stroked-button color="accent" (click)="viewOrders()">
+      <mat-icon>receipt_long</mat-icon> View Orders
+    </button>
+  </div>
+</div>

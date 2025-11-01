@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../../services/cart/cart.service';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import {  MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -20,8 +20,8 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    MatFormFieldModule
-],
+    MatFormFieldModule,
+  ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
@@ -66,13 +66,19 @@ export class CheckoutComponent {
         status: 'Pending',
       };
 
-      await addDoc(collection(this.firestore, 'orders'), orderData);
+      const docRef = await addDoc(
+        collection(this.firestore, 'orders'),
+        orderData
+      );
+
       this.success = true;
       this.cartService.clearCart();
 
       setTimeout(() => {
-        this.router.navigate(['/store']);
-      }, 2500);
+        this.router.navigate(['/order-success'], {
+          queryParams: { id: docRef.id, total: this.total },
+        });
+      }, 1000);
     } catch (err) {
       console.error('Error placing order:', err);
       alert('Something went wrong. Please try again.');

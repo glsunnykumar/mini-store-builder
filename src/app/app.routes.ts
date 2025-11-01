@@ -19,6 +19,14 @@ export const routes: Routes = [
         (m) => m.CheckoutComponent
       ),
   },
+
+  {
+  path: 'order-success',
+  loadComponent: () =>
+    import('./core/pages/cart/order-success/order-success.component').then(m => m.OrderSuccessComponent)
+},
+
+
   {
     path: 'dashboard',
     component: DashboardComponent,
