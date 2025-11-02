@@ -85,9 +85,12 @@ export const routes: Routes = [
           // },
         ],
       },
+      {
+  path: 'orders',
+  loadComponent: () =>
+    import('./core/pages/admin-orders/admin-orders.component').then(m => m.AdminOrdersComponent)
+}
 
-      { path: 'store', component: StoreComponent },
-      // {
       //   path: 'orders',
       //   loadComponent: () =>
       //     import('./core/pages/orders/orders.component').then(

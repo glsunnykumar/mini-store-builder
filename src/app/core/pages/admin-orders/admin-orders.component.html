@@ -1,0 +1,57 @@
+<div class="admin-orders-container">
+  <h2><mat-icon>supervisor_account</mat-icon> Manage Orders</h2>
+
+  <mat-accordion *ngIf="(orders$ | async)?.length; else noOrders">
+    <mat-expansion-panel *ngFor="let order of orders$ | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ order.customer.name }} ({{ order.customer.phone }})
+        </mat-panel-title>
+        <mat-panel-description>
+  ₹{{ order.total }} —
+  <span class="status-badge" [ngClass]="order.status.toLowerCase()">
+    {{ order.status }}
+  </span>
+</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="order-details">
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Date:</strong> {{ order.date?.toDate() | date: 'medium' }}</p>
+        <p><strong>Address:</strong> {{ order.customer.address }}</p>
+
+        <div class="items">
+          <h4>Items:</h4>
+          <div class="item" *ngFor="let item of order.items">
+            <img [src]="item.imageUrl" alt="{{ item.name }}" />
+            <div>
+              <p>{{ item.name }}</p>
+              <span>₹{{ item.price }} × {{ item.quantity }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-section">
+          <mat-form-field appearance="outline">
+            <mat-label>Update Status</mat-label>
+            <mat-select
+              [value]="order.status"
+              (selectionChange)="updateStatus(order.id, $event.value)"
+            >
+              <mat-option *ngFor="let status of statuses" [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <ng-template #noOrders>
+    <div class="no-orders">
+      <mat-icon>inbox</mat-icon>
+      <p>No orders found.</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,165 @@
+.admin-orders-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  color: #333;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #3f51b5;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  mat-expansion-panel {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+
+    ::ng-deep .mat-expansion-panel-header {
+      background: #f5f5f5;
+      font-weight: 500;
+      &:hover {
+        background: #e8eaf6;
+      }
+    }
+
+    /* 🌈 STATUS BADGES */
+.status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  &.pending {
+    background: #ff9800; /* Orange */
+  }
+
+  &.shipped {
+    background: #2196f3; /* Blue */
+  }
+
+  &.delivered {
+    background: #4caf50; /* Green */
+  }
+
+  &.cancelled {
+    background: #f44336; /* Red */
+  }
+}
+
+/* ✨ Hover highlight on status update */
+.status-section mat-form-field {
+  ::ng-deep .mdc-floating-label {
+    color: #3f51b5;
+  }
+
+  ::ng-deep .mdc-line-ripple::before {
+    border-bottom-color: #3f51b5;
+  }
+}
+
+/* ✅ Transition animation for status color change */
+.status-badge {
+  transition: background 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+
+    .order-details {
+      padding: 1rem;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+
+      .items {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 0.5rem;
+
+          img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+          }
+
+          p {
+            margin: 0;
+            font-weight: 500;
+            color: #3f51b5;
+          }
+
+          span {
+            font-size: 0.9rem;
+            color: #555;
+          }
+        }
+      }
+
+      .status-section {
+        margin-top: 1rem;
+
+        mat-form-field {
+          width: 200px;
+
+          ::ng-deep .mdc-floating-label {
+            color: #3f51b5;
+          }
+        }
+      }
+    }
+  }
+
+  .no-orders {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+
+    mat-icon {
+      font-size: 64px;
+      color: #ccc;
+    }
+  }
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+  .admin-orders-container {
+    margin: 1rem;
+    padding: 1rem;
+
+    mat-expansion-panel {
+      font-size: 0.9rem;
+    }
+
+    .status-section mat-form-field {
+      width: 100%;
+    }
+
+    .items .item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
