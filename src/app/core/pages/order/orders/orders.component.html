@@ -1,0 +1,43 @@
+<div class="orders-container">
+  <h2><mat-icon>receipt_long</mat-icon> My Orders</h2>
+
+  <div *ngIf="!(orders$ | async)?.length" class="no-orders">
+    <mat-icon>inbox</mat-icon>
+    <p>No orders placed yet.</p>
+    <button mat-flat-button color="primary" (click)="goBack()">
+      <mat-icon>storefront</mat-icon> Shop Now
+    </button>
+  </div>
+
+  <mat-accordion *ngIf="(orders$ | async)?.length">
+    <mat-expansion-panel *ngFor="let order of orders$ | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Order #{{ order.id }}
+        </mat-panel-title>
+        <mat-panel-description>
+          ₹{{ order.total }} — {{ order.status }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="order-details">
+        <p><strong>Date:</strong> {{ order.date?.toDate() | date:'medium' }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+
+        <div class="item-list">
+          <div *ngFor="let item of order.items" class="order-item">
+            <img [src]="item.imageUrl" alt="{{ item.name }}" />
+            <div>
+              <h4>{{ item.name }}</h4>
+              <p>₹{{ item.price }} × {{ item.quantity }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="total">
+          <strong>Total Amount: </strong> ₹{{ order.total }}
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
