@@ -7,6 +7,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
+import { OrderService } from '../../services/order/order.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-admin-orders',
@@ -16,21 +18,30 @@ import { Observable } from 'rxjs';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.scss'
 })
 export class AdminOrdersComponent {
-  orders$!: Observable<any[]>;
+  
+  orders: any[] = [];
   statuses = ['Pending', 'Shipped', 'Delivered', 'Cancelled'];
+   filteredOrders: any[] = [];
+  selectedStatus: string = '';
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore ,
+    private orderService :OrderService
+  ) {}
 
    ngOnInit() {
-    const ordersRef = collection(this.firestore, 'orders');
-    const q = query(ordersRef, orderBy('date', 'desc'));
-    this.orders$ = collectionData(q, { idField: 'id' });
+    this.loadOrders();
+  }
+
+    async loadOrders() {
+    this.orders = await this.orderService.getAllOrders();
+    this.filteredOrders = this.orders;
   }
 
   async updateStatus(orderId: string, newStatus: string) {
@@ -41,6 +52,21 @@ export class AdminOrdersComponent {
     } catch (err) {
       console.error('Error updating order status:', err);
     }
+  }
+
+  filterOrders() {
+    if (this.selectedStatus) {
+      this.filteredOrders = this.orders.filter(
+        (order) => order.status.toLowerCase() === this.selectedStatus.toLowerCase()
+      );
+    } else {
+      this.filteredOrders = this.orders;
+    }
+  }
+
+   filterByBadge(status: string) {
+    this.selectedStatus = status.toLowerCase();
+    this.filterOrders();
   }
 
 }

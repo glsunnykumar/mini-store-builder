@@ -7,6 +7,38 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   color: #333;
 
+  .filter-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+
+    mat-form-field {
+      width: 220px;
+
+      ::ng-deep .mdc-floating-label {
+        color: #3f51b5;
+      }
+
+      ::ng-deep .mdc-text-field--outlined {
+        border-radius: 8px;
+        background: #fafafa;
+      }
+
+      ::ng-deep .mdc-notched-outline__leading,
+      ::ng-deep .mdc-notched-outline__trailing {
+        border-color: rgba(63, 81, 181, 0.3);
+      }
+    }
+  }
+
+  .no-orders {
+    text-align: center;
+    color: #757575;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+
+
   h2 {
     display: flex;
     align-items: center;
@@ -24,59 +56,73 @@
     ::ng-deep .mat-expansion-panel-header {
       background: #f5f5f5;
       font-weight: 500;
+
       &:hover {
         background: #e8eaf6;
       }
     }
 
     /* 🌈 STATUS BADGES */
-.status-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #fff;
-  text-transform: capitalize;
-  letter-spacing: 0.3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    .status-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      cursor: pointer;
 
-  &.pending {
-    background: #ff9800; /* Orange */
-  }
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      user-select: none;
 
-  &.shipped {
-    background: #2196f3; /* Blue */
-  }
+      &:hover {
+        transform: scale(1.08);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+      }
 
-  &.delivered {
-    background: #4caf50; /* Green */
-  }
+      &.pending {
+        background: #ff9800;
+        /* Orange */
+      }
 
-  &.cancelled {
-    background: #f44336; /* Red */
-  }
-}
+      &.shipped {
+        background: #2196f3;
+        /* Blue */
+      }
 
-/* ✨ Hover highlight on status update */
-.status-section mat-form-field {
-  ::ng-deep .mdc-floating-label {
-    color: #3f51b5;
-  }
+      &.delivered {
+        background: #4caf50;
+        /* Green */
+      }
 
-  ::ng-deep .mdc-line-ripple::before {
-    border-bottom-color: #3f51b5;
-  }
-}
+      &.cancelled {
+        background: #f44336;
+        /* Red */
+      }
+    }
 
-/* ✅ Transition animation for status color change */
-.status-badge {
-  transition: background 0.3s ease, transform 0.2s ease;
+    /* ✨ Hover highlight on status update */
+    .status-section mat-form-field {
+      ::ng-deep .mdc-floating-label {
+        color: #3f51b5;
+      }
 
-  &:hover {
-    transform: scale(1.05);
-  }
-}
+      ::ng-deep .mdc-line-ripple::before {
+        border-bottom-color: #3f51b5;
+      }
+    }
+
+    /* ✅ Transition animation for status color change */
+    .status-badge {
+      transition: background 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
 
 
     .order-details {

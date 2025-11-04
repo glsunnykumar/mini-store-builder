@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, doc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { from } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
