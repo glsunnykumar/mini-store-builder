@@ -32,61 +32,49 @@ app-store-navbar {
   z-index: 900;
 }
 
+.store-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #3f51b5;
+  color: white;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 900;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.footer-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* Other existing styles */
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  max-width: 1200px; /* 🔹 Prevent overflow */
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Left side */
-.footer-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+.footer-right a {
+  color: white;
+  transition: transform 0.2s ease, color 0.3s ease;
+
+  &:hover {
+    color: #ff4081;
+    transform: scale(1.1);
+  }
 
   mat-icon {
-    vertical-align: middle;
     font-size: 22px;
-    margin-right: 4px;
-  }
-
-  .brand {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-
-  p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #e0e0e0;
   }
 }
 
-/* Right side (social icons) */
-.footer-right {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  a {
-    color: white;
-    transition: transform 0.2s ease, color 0.3s ease;
-
-    &:hover {
-      color: #ff4081;
-      transform: scale(1.1);
-    }
-
-    mat-icon {
-      font-size: 22px;
-    }
-  }
-}
 
 /* 📱 Responsive Footer */
 @media (max-width: 768px) {

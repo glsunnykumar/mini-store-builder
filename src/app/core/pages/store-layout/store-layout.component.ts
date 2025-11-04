@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { StoreNavbarComponent } from '../store-navbar/store-navbar.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,5 +15,21 @@ import { MatIconModule } from '@angular/material/icon';
 export class StoreLayoutComponent {
 
    currentYear = new Date().getFullYear();
+   lastScrollTop = 0;
+   hideFooter = false;
+
+    /** Detect user scroll direction */
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    if (st > this.lastScrollTop + 20) {
+      // User scrolled down
+      this.hideFooter = true;
+    } else if (st < this.lastScrollTop - 20) {
+      // User scrolled up
+      this.hideFooter = false;
+    }
+    this.lastScrollTop = st <= 0 ? 0 : st;
+  }
 
 }

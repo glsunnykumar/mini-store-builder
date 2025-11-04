@@ -1,11 +1,10 @@
 <app-store-navbar></app-store-navbar>
 
-<!-- Main content for nested routes -->
 <main class="store-content">
   <router-outlet></router-outlet>
 </main>
-<!-- 🌟 Sticky Footer -->
-<footer class="store-footer">
+
+<footer class="store-footer" [class.footer-hidden]="hideFooter">
   <div class="footer-content">
     <div class="footer-left">
       <mat-icon>storefront</mat-icon>
