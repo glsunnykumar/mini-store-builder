@@ -1,0 +1,98 @@
+.store-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #3f51b5;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 🏬 Logo Section */
+.logo-section {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  mat-icon {
+    margin-right: 6px;
+    font-size: 26px;
+  }
+
+  .brand-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* 🔍 Search Bar */
+.search-container {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 30px;
+  padding: 0.3rem 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .search-icon {
+    color: #757575;
+    margin-right: 6px;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    background: transparent;
+    color: #333;
+  }
+}
+
+/* 🛒 Cart & Orders */
+.cart-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .cart-btn {
+    position: relative;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ff4081;
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    color: white;
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 220px;
+  }
+
+  .brand-name {
+    display: none;
+  }
+}
