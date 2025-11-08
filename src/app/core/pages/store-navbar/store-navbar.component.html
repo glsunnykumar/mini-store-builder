@@ -28,46 +28,57 @@
     </button>
 
     <!-- 👤 Account Dropdown -->
-    <ng-container *ngIf="isLoggedIn; else loginBtn">
-      <button
-        mat-button
-        [matMenuTriggerFor]="accountMenu"
-        class="account-btn"
-      >
-        <img
-          *ngIf="photoURL; else defaultIcon"
-          [src]="photoURL"
-          alt="User photo"
-          class="user-photo"
-        />
-        <ng-template #defaultIcon>
-          <mat-icon>account_circle</mat-icon>
-        </ng-template>
-        <span class="username">{{ displayName || email }}</span>
-        <mat-icon>expand_more</mat-icon>
-      </button>
+  <!-- 👤 Account Dropdown with Hover Card -->
+<ng-container *ngIf="isLoggedIn; else loginBtn">
+  <div class="account-hover-container" (mouseleave)="hideHoverCard()">
+    <button
+      mat-button
+      [matMenuTriggerFor]="accountMenu"
+      class="account-btn"
+      (mouseenter)="showHoverCard()"
+    >
+      <img
+        *ngIf="photoURL; else defaultIcon"
+        [src]="photoURL"
+        alt="User photo"
+        class="user-photo"
+      />
+      <ng-template #defaultIcon>
+        <mat-icon>account_circle</mat-icon>
+      </ng-template>
+      <span class="username">{{ displayName || email }}</span>
+      <mat-icon>expand_more</mat-icon>
+    </button>
 
-      <mat-menu #accountMenu="matMenu">
-        <button mat-menu-item routerLink="/profile">
-          <mat-icon>person</mat-icon>
-          <span>My Profile</span>
-        </button>
-        <button mat-menu-item routerLink="/orders">
-          <mat-icon>shopping_bag</mat-icon>
-          <span>My Orders</span>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
-    </ng-container>
+    <!-- 🌟 Hover Card -->
+    <div class="hover-card" *ngIf="hoverVisible">
+      <p>👋 Hi, {{ displayName || 'there' }}!</p>
+      <p class="email">{{ email }}</p>
+    </div>
 
-    <ng-template #loginBtn>
-      <button mat-icon-button routerLink="/login" matTooltip="Login / Signup">
-        <mat-icon>login</mat-icon>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item routerLink="/profile">
+        <mat-icon>person</mat-icon>
+        <span>My Profile</span>
       </button>
-    </ng-template>
+      <button mat-menu-item routerLink="/orders">
+        <mat-icon>shopping_bag</mat-icon>
+        <span>My Orders</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</ng-container>
+
+<ng-template #loginBtn>
+  <button mat-icon-button routerLink="/login" matTooltip="Login / Signup">
+    <mat-icon>login</mat-icon>
+  </button>
+</ng-template>
+
   </div>
 </header>

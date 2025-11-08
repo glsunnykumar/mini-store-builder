@@ -63,6 +63,16 @@ export class StoreNavbarComponent {
     this.searchChange.emit(this.searchQuery);
   }
 
+  hoverVisible = false;
+
+showHoverCard() {
+  this.hoverVisible = true;
+}
+
+hideHoverCard() {
+  this.hoverVisible = false;
+}
+
   /** Trigger open cart dialog */
   openCart() {
     this.openCartEvent.emit();
