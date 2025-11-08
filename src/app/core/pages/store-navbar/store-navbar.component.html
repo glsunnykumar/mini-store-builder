@@ -27,8 +27,7 @@
       <mat-icon>receipt_long</mat-icon>
     </button>
 
-    <!-- 👤 Account Dropdown -->
-  <!-- 👤 Account Dropdown with Hover Card -->
+    <!-- 👤 Account Dropdown + Hover Card -->
 <ng-container *ngIf="isLoggedIn; else loginBtn">
   <div class="account-hover-container" (mouseleave)="hideHoverCard()">
     <button
@@ -36,6 +35,7 @@
       [matMenuTriggerFor]="accountMenu"
       class="account-btn"
       (mouseenter)="showHoverCard()"
+      (click)="toggleHoverCard()"
     >
       <img
         *ngIf="photoURL; else defaultIcon"
@@ -50,7 +50,7 @@
       <mat-icon>expand_more</mat-icon>
     </button>
 
-    <!-- 🌟 Hover Card -->
+    <!-- 🌟 Hover / Tap Card -->
     <div class="hover-card" *ngIf="hoverVisible">
       <p>👋 Hi, {{ displayName || 'there' }}!</p>
       <p class="email">{{ email }}</p>
@@ -79,6 +79,7 @@
     <mat-icon>login</mat-icon>
   </button>
 </ng-template>
+
 
   </div>
 </header>

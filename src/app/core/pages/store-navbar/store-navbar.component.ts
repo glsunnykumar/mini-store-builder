@@ -37,6 +37,8 @@ export class StoreNavbarComponent {
   email: string | null = null;
   isLoggedIn = false;
   userEmail: string | null = null;
+  hoverVisible = false;
+isMobile = false;
 
 
    constructor(private router: Router, private auth: Auth ,private authService: AuthService) {}
@@ -56,6 +58,12 @@ export class StoreNavbarComponent {
         this.email = null;
       }
     });
+
+     // ✅ Detect mobile width
+  this.isMobile = window.innerWidth <= 768;
+  window.addEventListener('resize', () => {
+    this.isMobile = window.innerWidth <= 768;
+  });
   }
 
   /** Emit search text changes */
@@ -63,14 +71,25 @@ export class StoreNavbarComponent {
     this.searchChange.emit(this.searchQuery);
   }
 
-  hoverVisible = false;
 
+  /** 👆 For desktop hover */
 showHoverCard() {
-  this.hoverVisible = true;
+  if (!this.isMobile) this.hoverVisible = true;
 }
 
+/** 👇 Hide card */
 hideHoverCard() {
-  this.hoverVisible = false;
+  if (!this.isMobile) this.hoverVisible = false;
+}
+
+/** 📱 For mobile tap */
+toggleHoverCard() {
+  if (this.isMobile) {
+    this.hoverVisible = !this.hoverVisible;
+    if (this.hoverVisible) {
+      setTimeout(() => (this.hoverVisible = false), 3000); // auto-hide after 3s
+    }
+  }
 }
 
   /** Trigger open cart dialog */
