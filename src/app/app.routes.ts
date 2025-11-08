@@ -50,8 +50,8 @@ export const routes: Routes = [
         path: 'product/:id',
         loadComponent: () =>
           import(
-            './core/pages/product/product-detail-dialog/product-detail-dialog.component'
-          ).then((m) => m.ProductDetailDialogComponent),
+            './core/pages/product/product-detail/product-detail.component'
+          ).then((m) => m.ProductDetailComponent),
       },
       {
         path: 'profile',

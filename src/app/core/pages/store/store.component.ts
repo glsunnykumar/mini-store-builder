@@ -7,13 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { Product, ProductService } from '../../services/product/product.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {CommonModule, TitleCasePipe} from '@angular/common';
 import { CategoryService } from '../../services/category/category.service';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductDetailDialogComponent } from '../product/product-detail-dialog/product-detail-dialog.component';
 import { CartService } from '../../services/cart/cart.service';
 import { CartDialogComponent } from '../cart/cart-dialog/cart-dialog.component';
 
@@ -45,7 +44,8 @@ export class StoreComponent {
     private categoryService: CategoryService,
     private productService: ProductService,
      private dialog: MatDialog,
-      private cartService: CartService
+    private cartService: CartService,
+      private router :Router
   ) {}
 
    async ngOnInit() {
@@ -93,12 +93,7 @@ export class StoreComponent {
 
 
   openProductDetail(product: any) {
-  this.dialog.open(ProductDetailDialogComponent, {
-    data: product,
-    width: '600px',
-    maxWidth: '95vw',
-    panelClass: 'product-dialog'
-  });
+   this.router.navigate(['/product', product.id]);
 }
 
   openCart() {
