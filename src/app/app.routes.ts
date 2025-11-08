@@ -49,6 +49,11 @@ export const routes: Routes = [
             (m) => m.ProductDetailDialogComponent
           ),
       },
+      {
+  path: 'profile',
+  loadComponent: () =>
+    import('./core/pages/profile/profile.component').then((m) => m.ProfileComponent),
+},
     ],
   },
 

@@ -18,7 +18,7 @@ import {MatDividerModule} from '@angular/material/divider';
      RouterModule,
      MatTooltipModule,
      MatMenuModule,
-     MatDividerModule
+     MatDividerModule 
     ],
   templateUrl: './store-navbar.component.html',
   styleUrl: './store-navbar.component.scss'
