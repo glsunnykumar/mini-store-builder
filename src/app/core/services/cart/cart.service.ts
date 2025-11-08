@@ -14,75 +14,64 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  private cartKey = 'miniStoreCart';
-  private cartItems: CartItem[] = [];
-  private cartSubject = new BehaviorSubject<CartItem[]>([]);
+  private cartKey = 'app_cart';
+  private cartSubject = new BehaviorSubject<any[]>(this.loadCart());
+  cart$ = this.cartSubject.asObservable(); // ✅ expose observable
 
-  cart$ = this.cartSubject.asObservable();
 
-  constructor() {
-    this.loadCart();
+/** ✅ Load cart from localStorage */
+  private loadCart(): any[] {
+    const stored = localStorage.getItem(this.cartKey);
+    return stored ? JSON.parse(stored) : [];
   }
 
-
-   /** ✅ Load cart from localStorage */
-  private loadCart() {
-    const data = localStorage.getItem(this.cartKey);
-    if (data) {
-      this.cartItems = JSON.parse(data);
-      this.cartSubject.next(this.cartItems);
-    }
+  /** ✅ Save cart and notify subscribers */
+  private saveCart(cart: any[]) {
+    localStorage.setItem(this.cartKey, JSON.stringify(cart));
+    this.cartSubject.next(cart);
   }
 
-    /** ✅ Save cart to localStorage */
-  private saveCart() {
-    localStorage.setItem(this.cartKey, JSON.stringify(this.cartItems));
-    this.cartSubject.next(this.cartItems);
+  /** ✅ Get current cart items (non-reactive) */
+  getItems(): any[] {
+    return this.cartSubject.value;
   }
 
-   /** ✅ Add or update item */
+  /** ✅ Add a product to the cart */
   addToCart(product: any) {
-    const existing = this.cartItems.find(i => i.id === product.id);
+    const currentCart = this.getItems();
+    const existing = currentCart.find((item) => item.id === product.id);
+
     if (existing) {
-      existing.quantity += 1;
+      existing.quantity = (existing.quantity || 1) + 1;
     } else {
-      this.cartItems.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        imageUrl: product.imageUrl || product.coverImage,
-        categoryId: product.categoryId
-      });
+      currentCart.push({ ...product, quantity: 1 });
     }
-    this.saveCart();
+
+    this.saveCart(currentCart);
   }
 
-    /** ✅ Remove item */
-  removeFromCart(id: string) {
-    this.cartItems = this.cartItems.filter(i => i.id !== id);
-    this.saveCart();
+  /** ✅ Remove a product from the cart */
+  removeFromCart(productId: string) {
+    const updated = this.getItems().filter((item) => item.id !== productId);
+    this.saveCart(updated);
   }
 
-  /** ✅ Clear all items */
+  /** ✅ Clear the entire cart */
   clearCart() {
-    this.cartItems = [];
-    this.saveCart();
+    this.saveCart([]);
   }
 
-  /** ✅ Get cart count */
+  /** ✅ Get total number of items */
   getCartCount(): number {
-    return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    return this.getItems().reduce((count, item) => count + (item.quantity || 1), 0);
   }
 
-  /** ✅ Get total price */
+  /** ✅ Calculate total price */
   getCartTotal(): number {
-    return this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  }
-
-  /** ✅ Get all items */
-  getItems(): CartItem[] {
-    return [...this.cartItems];
+    return this.getItems().reduce(
+      (total, item) => total + (item.price || 0) * (item.quantity || 1),
+      0
+    );
   }
 
 

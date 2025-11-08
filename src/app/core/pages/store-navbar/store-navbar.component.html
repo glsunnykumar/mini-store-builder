@@ -27,5 +27,14 @@
     <button mat-icon-button routerLink="/orders" matTooltip="View Orders">
       <mat-icon>receipt_long</mat-icon>
     </button>
+
+       <!-- 🔹 Dynamic Auth Button -->
+    <button
+      mat-icon-button
+      (click)="handleAuthAction()"
+      [matTooltip]="isLoggedIn ? 'Logout (' + userEmail + ')' : 'Login / Signup'"
+    >
+      <mat-icon>{{ isLoggedIn ? 'account_circle' : 'login' }}</mat-icon>
+    </button>
   </div>
 </header>

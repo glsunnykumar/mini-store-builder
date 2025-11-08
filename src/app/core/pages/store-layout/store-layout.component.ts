@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { StoreNavbarComponent } from '../store-navbar/store-navbar.component';
 import { MatIconModule } from '@angular/material/icon';
+import { CartService } from '../../services/cart/cart.service';
 
 @Component({
   selector: 'app-store-layout',
@@ -15,8 +16,20 @@ import { MatIconModule } from '@angular/material/icon';
 export class StoreLayoutComponent {
 
    currentYear = new Date().getFullYear();
+    cartCount = 0;
+
    lastScrollTop = 0;
    hideFooter = false;
+
+
+     constructor(private cartService: CartService) {}
+
+     ngOnInit() {
+    // ✅ Subscribe to cart changes
+    this.cartService.cart$.subscribe((items) => {
+      this.cartCount = items.length;
+    });
+  }
 
     /** Detect user scroll direction */
   @HostListener('window:scroll', [])
