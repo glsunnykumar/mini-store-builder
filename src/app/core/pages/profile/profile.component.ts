@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Auth, onAuthStateChanged, updateProfile } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +18,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/stor
   imports: [
     CommonModule,
     FormsModule,
+
+    
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
@@ -35,7 +38,7 @@ export class ProfileComponent implements OnInit {
   newPhotoFile: File | null = null;
   loading = false;
 
-  constructor(private auth: Auth, private firestore: Firestore) {}
+  constructor(private auth: Auth, private firestore: Firestore , private authService: AuthService) {}
 
   ngOnInit() {
     onAuthStateChanged(this.auth, async (user) => {
@@ -89,6 +92,8 @@ export class ProfileComponent implements OnInit {
         email: this.email,
       });
 
+      
+      await this.authService.refreshUser();
       alert('✅ Profile updated successfully!');
     } catch (error) {
       console.error('Profile update error:', error);

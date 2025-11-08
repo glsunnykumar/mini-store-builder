@@ -8,6 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-store-navbar',
@@ -31,24 +32,32 @@ export class StoreNavbarComponent {
   @Output() searchChange = new EventEmitter<string>();
    @Output() openCartEvent = new EventEmitter<void>();
 
+  displayName: string | null = null;
+  photoURL: string | null = null;
+  email: string | null = null;
   isLoggedIn = false;
   userEmail: string | null = null;
 
 
-   constructor(private router: Router, private auth: Auth) {}
+   constructor(private router: Router, private auth: Auth ,private authService: AuthService) {}
 
-     ngOnInit() {
-    // ✅ Track Firebase auth state
-    onAuthStateChanged(this.auth, (user) => {
+
+   ngOnInit() {
+    this.authService.user$.subscribe((user) => {
       if (user) {
         this.isLoggedIn = true;
-        this.userEmail = user.email;
+        this.displayName = user.displayName;
+        this.photoURL = user.photoURL;
+        this.email = user.email;
       } else {
         this.isLoggedIn = false;
-        this.userEmail = null;
+        this.displayName = null;
+        this.photoURL = null;
+        this.email = null;
       }
     });
   }
+
   /** Emit search text changes */
   onSearchChange() {
     this.searchChange.emit(this.searchQuery);

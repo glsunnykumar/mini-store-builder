@@ -26,6 +26,15 @@ export class AuthService {
     });
   }
 
+  /** Force reload after profile update */
+  async refreshUser() {
+    const current = this.auth.currentUser;
+    if (current) {
+      await current.reload();
+      this.currentUserSubject.next(this.auth.currentUser);
+    }
+  }
+
    async signup(email: string, password: string): Promise<void> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
@@ -58,6 +67,11 @@ export class AuthService {
   async logout() {
     await signOut(this.auth);
     this.router.navigate(['/login']);
+  }
+
+    /** Get current user synchronously */
+  getCurrentUser() {
+    return this.auth.currentUser;
   }
 
    get currentUser() {
