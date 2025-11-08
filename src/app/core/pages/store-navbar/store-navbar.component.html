@@ -29,12 +29,43 @@
     </button>
 
        <!-- 🔹 Dynamic Auth Button -->
-    <button
-      mat-icon-button
-      (click)="handleAuthAction()"
-      [matTooltip]="isLoggedIn ? 'Logout (' + userEmail + ')' : 'Login / Signup'"
-    >
-      <mat-icon>{{ isLoggedIn ? 'account_circle' : 'login' }}</mat-icon>
-    </button>
+     <!-- 👤 Account Menu -->
+    <ng-container *ngIf="isLoggedIn; else loginButton">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="accountMenu"
+        matTooltip="{{ userEmail }}"
+        aria-label="Account Menu"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <mat-menu #accountMenu="matMenu" xPosition="before" yPosition="below">
+        <button mat-menu-item (click)="goToProfile()">
+          <mat-icon>person</mat-icon>
+          <span>My Profile</span>
+        </button>
+        <button mat-menu-item (click)="goToOrders()">
+          <mat-icon>receipt_long</mat-icon>
+          <span>My Orders</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+
+    <!-- 🔑 Login Button (if not logged in) -->
+    <ng-template #loginButton>
+      <button
+        mat-icon-button
+        (click)="goToLogin()"
+        matTooltip="Login / Signup"
+      >
+        <mat-icon>login</mat-icon>
+      </button>
+    </ng-template>
   </div>
 </header>
