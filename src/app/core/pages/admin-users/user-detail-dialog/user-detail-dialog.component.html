@@ -1,0 +1,39 @@
+<mat-card class="user-dialog-card">
+  <div class="header">
+    <img *ngIf="data.photoURL; else defaultAvatar" [src]="data.photoURL" class="avatar" />
+    <ng-template #defaultAvatar>
+      <mat-icon class="avatar-placeholder">account_circle</mat-icon>
+    </ng-template>
+    <div class="info">
+      <h2>{{ data.displayName || 'Unnamed User' }}</h2>
+      <p>{{ data.email }}</p>
+    </div>
+  </div>
+
+  <h3>🧾 Recent Orders</h3>
+  <div *ngIf="!loading; else loader">
+    <div *ngIf="orders.length > 0; else noOrders">
+      <div class="order" *ngFor="let o of orders">
+        <p><strong>ID:</strong> {{ o.id }}</p>
+        <p><strong>Total:</strong> ₹{{ o.total }}</p>
+        <p><strong>Status:</strong> {{ o.status }}</p>
+      </div>
+    </div>
+
+    <ng-template #noOrders>
+      <p class="empty">No orders found for this user.</p>
+    </ng-template>
+  </div>
+
+  <ng-template #loader>
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  </ng-template>
+
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="close()">
+      <mat-icon>close</mat-icon> Close
+    </button>
+  </div>
+</mat-card>

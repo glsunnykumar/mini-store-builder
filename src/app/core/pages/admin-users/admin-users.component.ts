@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatDialog } from '@angular/material/dialog';
+import { UserDetailDialogComponent } from './user-detail-dialog/user-detail-dialog.component';
 
 interface User {
   id: string;
@@ -37,11 +39,11 @@ interface User {
 export class AdminUsersComponent implements OnInit {
   users: User[] = [];
   displayedUsers: User[] = [];
+  displayedColumns = ['photo', 'name', 'email', 'actions'];
   searchQuery = '';
-  displayedColumns = ['photo', 'name', 'email'];
   loading = true;
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore ,  private dialog: MatDialog) {}
 
   async ngOnInit() {
     await this.loadUsers();
@@ -57,6 +59,13 @@ export class AdminUsersComponent implements OnInit {
     this.displayedUsers = [...this.users];
     this.loading = false;
   }
+
+  openUserDetails(user: any) {
+  this.dialog.open(UserDetailDialogComponent, {
+    width: '420px',
+    data: user,
+  });
+}
 
   /** 🔍 Search user by name or email */
   onSearchChange() {
