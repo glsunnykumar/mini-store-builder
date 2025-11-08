@@ -21,19 +21,23 @@ export const routes: Routes = [
       {
         path: 'store',
         loadComponent: () =>
-          import('./core/pages/store/store.component').then((m) => m.StoreComponent),
+          import('./core/pages/store/store.component').then(
+            (m) => m.StoreComponent
+          ),
       },
       {
         path: 'checkout',
         loadComponent: () =>
-          import('./core/pages/checkout/checkout.component').then((m) => m.CheckoutComponent),
+          import('./core/pages/checkout/checkout.component').then(
+            (m) => m.CheckoutComponent
+          ),
       },
       {
         path: 'order-success',
         loadComponent: () =>
-          import('./core/pages/cart/order-success/order-success.component').then(
-            (m) => m.OrderSuccessComponent
-          ),
+          import(
+            './core/pages/cart/order-success/order-success.component'
+          ).then((m) => m.OrderSuccessComponent),
       },
       {
         path: 'orders',
@@ -45,15 +49,17 @@ export const routes: Routes = [
       {
         path: 'product/:id',
         loadComponent: () =>
-          import('./core/pages/product/product-detail-dialog/product-detail-dialog.component').then(
-            (m) => m.ProductDetailDialogComponent
-          ),
+          import(
+            './core/pages/product/product-detail-dialog/product-detail-dialog.component'
+          ).then((m) => m.ProductDetailDialogComponent),
       },
       {
-  path: 'profile',
-  loadComponent: () =>
-    import('./core/pages/profile/profile.component').then((m) => m.ProfileComponent),
-},
+        path: 'profile',
+        loadComponent: () =>
+          import('./core/pages/profile/profile.component').then(
+            (m) => m.ProfileComponent
+          ),
+      },
     ],
   },
 
@@ -83,11 +89,19 @@ export const routes: Routes = [
           {
             path: ':id',
             loadComponent: () =>
-              import('./core/pages/category/category-detail/category-detail.component').then(
-                (m) => m.CategoryDetailComponent
-              ),
+              import(
+                './core/pages/category/category-detail/category-detail.component'
+              ).then((m) => m.CategoryDetailComponent),
           },
         ],
+      },
+
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./core/pages/admin-users/admin-users.component').then(
+            (m) => m.AdminUsersComponent
+          ),
       },
       {
         path: 'product',
@@ -95,9 +109,9 @@ export const routes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./core/pages/product/product-list/product-list.component').then(
-                (m) => m.ProductListComponent
-              ),
+              import(
+                './core/pages/product/product-list/product-list.component'
+              ).then((m) => m.ProductListComponent),
           },
           // Uncomment later if editing in dialog route form:
           // {
