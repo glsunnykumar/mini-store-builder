@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class CartDialogComponent {
 
-   cartItems: CartItem[] = [];
+  cartItems: CartItem[] = [];
   total = 0;
 
   constructor(

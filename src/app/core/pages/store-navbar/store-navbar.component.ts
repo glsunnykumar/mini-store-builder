@@ -9,6 +9,8 @@ import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import { AuthService } from '../../services/auth/auth.service';
+import { CartDialogComponent } from '../cart/cart-dialog/cart-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-store-navbar',
@@ -41,7 +43,11 @@ export class StoreNavbarComponent {
 isMobile = false;
 
 
-   constructor(private router: Router, private auth: Auth ,private authService: AuthService) {}
+   constructor(private router: Router,
+     private auth: Auth ,
+     private authService: AuthService,
+       private dialog: MatDialog,
+    ) {}
 
 
    ngOnInit() {
@@ -94,6 +100,14 @@ toggleHoverCard() {
 
   /** Trigger open cart dialog */
   openCart() {
+     console.log('cart is opening');
+      this.dialog.open(CartDialogComponent, {
+         width: '500px',
+         maxWidth: '95vw',
+         panelClass: 'cart-dialog',
+          autoFocus: false,
+           restoreFocus: false,
+       });
     this.openCartEvent.emit();
   }
 

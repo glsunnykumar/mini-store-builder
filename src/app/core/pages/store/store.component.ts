@@ -102,10 +102,13 @@ export class StoreComponent {
 }
 
   openCart() {
+  console.log('cart is opening');
   this.dialog.open(CartDialogComponent, {
     width: '500px',
     maxWidth: '95vw',
-    panelClass: 'cart-dialog'
+    panelClass: 'cart-dialog',
+     autoFocus: false,
+      restoreFocus: false,
   });
 }
 
