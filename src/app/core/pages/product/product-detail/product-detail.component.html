@@ -2,19 +2,13 @@
 <section class="product-hero" *ngIf="product; else loadingTemplate">
   <!-- 🖼️ Product Image -->
   <div class="image-area">
-    <img
-      [src]="product.imageUrl"
-      [alt]="product.name"
-      class="main-image"
-    />
+    <img [src]="product.imageUrl" [alt]="product.name" class="main-image" />
   </div>
 
   <!-- 🧾 Product Details -->
   <div class="details-area">
     <h1 class="product-name">{{ product.name }}</h1>
-    <p class="product-category">
-      Category ID: {{ product.categoryId }}
-    </p>
+    <p class="product-category">Category ID: {{ product.categoryId }}</p>
     <p class="price">₹{{ product.price }}</p>
     <p class="description">{{ product.description }}</p>
 
@@ -27,11 +21,10 @@
       </button>
     </div>
 
-    <!-- ⭐ Ratings & Reviews Section -->
+    <!-- ⭐ Ratings & Reviews -->
     <div class="review-section" *ngIf="product">
       <h3 class="review-title">Ratings & Reviews</h3>
 
-      <!-- Average Rating -->
       <div class="rating-summary" *ngIf="product.reviews?.length > 0">
         <div class="avg-rating">
           <span class="rating-number">{{ averageRating.toFixed(1) }}</span>
@@ -40,7 +33,6 @@
         </div>
       </div>
 
-      <!-- Reviews List -->
       <div class="review-list" *ngIf="product.reviews?.length; else noReviews">
         <div class="review-card" *ngFor="let review of product.reviews">
           <div class="review-header">
@@ -56,15 +48,12 @@
         </div>
       </div>
 
-      <!-- No Reviews -->
       <ng-template #noReviews>
         <p class="no-review-text">No reviews yet. Be the first to review!</p>
       </ng-template>
 
-      <!-- ✏️ Add Review (Only for logged-in users) -->
       <div *ngIf="user; else loginPrompt" class="add-review">
         <h4>Add Your Review</h4>
-
         <div class="rating-input">
           <mat-icon
             *ngFor="let s of stars"
@@ -93,13 +82,10 @@
         </div>
       </div>
 
-      <!-- 🔒 Login Prompt -->
       <ng-template #loginPrompt>
         <div class="login-prompt">
           <p>
-            You need to
-            <a routerLink="/login">sign in</a>
-            to leave a review.
+            You need to <a routerLink="/login">sign in</a> to leave a review.
           </p>
         </div>
       </ng-template>
@@ -107,11 +93,21 @@
   </div>
 </section>
 
-<!-- ===================== SIMILAR PRODUCTS ===================== -->
+<!-- ===================== SIMILAR PRODUCTS CAROUSEL ===================== -->
 <section class="similar-products-section" *ngIf="similarProducts.length > 0">
-  <h2>Similar Products</h2>
+  <div class="header-with-arrows">
+    <h2>Similar Products</h2>
+    <div class="arrows">
+      <button mat-icon-button (click)="scrollLeft()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button mat-icon-button (click)="scrollRight()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
 
-  <div class="scroll-container">
+  <div class="scroll-container" #scrollContainer>
     <mat-card
       *ngFor="let p of similarProducts"
       class="product-card"

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,9 @@ import { MatCard, MatCardModule } from "@angular/material/card";
   styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
+
+    @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
+
   product: any;
   loading = true;
 
@@ -66,6 +69,14 @@ export class ProductDetailComponent implements OnInit {
     async loadSimilarProducts(categoryId: string) {
     const allProducts = await this.productService.getProductsByCategory(categoryId);
     this.similarProducts = allProducts.filter((p: any) => p.id !== this.product.id);
+  }
+
+    scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
   }
 
   /** Star selection */
