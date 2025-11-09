@@ -8,6 +8,7 @@ import { CartService } from '../../../services/cart/cart.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ProductService } from '../../../services/product/product.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCard, MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: 'app-product-detail',
@@ -16,10 +17,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     FormsModule,
     RouterModule,
     MatProgressSpinnerModule,
-  ],
+    MatCard
+],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
 })
@@ -31,6 +34,7 @@ export class ProductDetailComponent implements OnInit {
   stars = [1, 2, 3, 4, 5];
   user: any = null;
   newReview = { rating: 0, comment: '', name: '' };
+   similarProducts: any[] = [];
   averageRating = 0;
 
   constructor(
@@ -46,7 +50,7 @@ export class ProductDetailComponent implements OnInit {
     if (id) {
       console.log(id);
       this.product = await this.productService.getProductIdById(id);
-      console.log(this.product);
+       this.loadSimilarProducts(this.product.categoryId);
       this.loading = false;
       this.calculateAverageRating();
     }
@@ -57,6 +61,11 @@ export class ProductDetailComponent implements OnInit {
       this.user = user;
       this.newReview.name = user?.displayName || 'Anonymous';
     });
+  }
+
+    async loadSimilarProducts(categoryId: string) {
+    const allProducts = await this.productService.getProductsByCategory(categoryId);
+    this.similarProducts = allProducts.filter((p: any) => p.id !== this.product.id);
   }
 
   /** Star selection */
@@ -109,5 +118,8 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
+  }
+    openProduct(product: any) {
+    this.router.navigate(['/store/product', product.id]);
   }
 }

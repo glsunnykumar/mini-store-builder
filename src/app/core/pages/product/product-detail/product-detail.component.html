@@ -10,27 +10,114 @@
     <p class="product-category">Category ID: {{ product.categoryId }}</p>
 
     <h3 class="price">₹{{ product.price }}</h3>
-
-    <p class="description">
-      {{ product.description }}
-    </p>
+    <p class="description">{{ product.description }}</p>
 
     <div class="actions">
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="addToCart(product)"
-        class="add-btn"
-      >
-        <mat-icon>shopping_cart</mat-icon>
-        Add to Cart
+      <button mat-flat-button color="primary" (click)="addToCart(product)">
+        <mat-icon>shopping_cart</mat-icon> Add to Cart
       </button>
 
       <button mat-stroked-button color="warn" routerLink="/store">
-        <mat-icon>close</mat-icon>
-        Cancel
+        <mat-icon>close</mat-icon> Cancel
       </button>
     </div>
+
+    <!-- ⭐ Rating & Review Section (Moved Below Buttons) -->
+    <div class="review-section" *ngIf="product">
+      <h3 class="review-title">Ratings & Reviews</h3>
+
+      <!-- Average Rating -->
+      <div class="rating-summary" *ngIf="product.reviews?.length > 0">
+        <div class="avg-rating">
+          <span class="rating-number">{{ averageRating.toFixed(1) }}</span>
+          <mat-icon class="star-icon">star</mat-icon>
+          <span class="total-reviews">({{ product.reviews.length }} Reviews)</span>
+        </div>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="review-list" *ngIf="product.reviews?.length; else noReviews">
+        <div class="review-card" *ngFor="let review of product.reviews">
+          <div class="review-header">
+            <mat-icon class="avatar">person</mat-icon>
+            <div class="reviewer">
+              <strong>{{ review.name }}</strong>
+              <div class="stars">
+                <mat-icon *ngFor="let s of stars" [class.filled]="s <= review.rating">star</mat-icon>
+              </div>
+            </div>
+          </div>
+          <p class="review-text">{{ review.comment }}</p>
+        </div>
+      </div>
+
+      <!-- No Reviews -->
+      <ng-template #noReviews>
+        <p class="no-review-text">No reviews yet. Be the first to review!</p>
+      </ng-template>
+
+      <!-- ✏️ Add Review (Only Logged-in) -->
+      <div *ngIf="user; else loginPrompt" class="add-review">
+        <h4>Add Your Review</h4>
+
+        <div class="rating-input">
+          <mat-icon
+            *ngFor="let s of stars"
+            (click)="setRating(s)"
+            [class.filled]="s <= newReview.rating"
+            >star</mat-icon
+          >
+        </div>
+
+        <textarea
+          placeholder="Write your review..."
+          [(ngModel)]="newReview.comment"
+          rows="3"
+        ></textarea>
+
+        <div class="review-actions">
+          <button mat-stroked-button color="primary" (click)="resetReview()">Cancel</button>
+          <button
+            mat-flat-button
+            color="primary"
+            [disabled]="!newReview.comment || newReview.rating === 0"
+            (click)="submitReview()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+
+      <!-- 🔒 Not logged in -->
+      <ng-template #loginPrompt>
+        <div class="login-prompt">
+          <p>
+            You need to
+            <a routerLink="/login">sign in</a>
+            to leave a review.
+          </p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- 🛍️ SIMILAR PRODUCTS SECTION -->
+<div class="similar-products" *ngIf="similarProducts.length > 0">
+  <h3>Similar Products</h3>
+
+  <div class="similar-grid">
+    <mat-card
+      *ngFor="let p of similarProducts"
+      class="similar-card"
+      (click)="openProduct(p)"
+    >
+      <img [src]="p.imageUrl" alt="{{ p.name }}" class="similar-image" />
+      <div class="similar-info">
+        <h4>{{ p.name }}</h4>
+        <p class="price">₹{{ p.price }}</p>
+      </div>
+    </mat-card>
   </div>
 </div>
 
@@ -41,92 +128,3 @@
     <p>Loading product details...</p>
   </div>
 </ng-template>
-
-
-
-<!-- ⭐ Rating & Review Section -->
-<div class="review-section" *ngIf="product">
-  <h3 class="review-title">Ratings & Reviews</h3>
-
-  <!-- Average Rating -->
-  <div class="rating-summary" *ngIf="product.reviews?.length > 0">
-    <div class="avg-rating">
-      <span class="rating-number">{{ averageRating.toFixed(1) }}</span>
-      <mat-icon class="star-icon">star</mat-icon>
-      <span class="total-reviews">({{ product.reviews.length }} Reviews)</span>
-    </div>
-  </div>
-
-  <!-- Reviews List -->
-  <div class="review-list" *ngIf="product.reviews?.length; else noReviews">
-    <div class="review-card" *ngFor="let review of product.reviews">
-      <div class="review-header">
-        <mat-icon class="avatar">person</mat-icon>
-        <div class="reviewer">
-          <strong>{{ review.name }}</strong>
-          <div class="stars">
-            <mat-icon
-              *ngFor="let s of stars"
-              [class.filled]="s <= review.rating"
-              >star</mat-icon
-            >
-          </div>
-        </div>
-      </div>
-      <p class="review-text">{{ review.comment }}</p>
-    </div>
-  </div>
-
-  <!-- No Reviews -->
-  <ng-template #noReviews>
-    <p class="no-review-text">No reviews yet. Be the first to review!</p>
-  </ng-template>
-
-  <!-- ✏️ Add Review (Only Logged-in) -->
-  <div *ngIf="user; else loginPrompt" class="add-review">
-    <h4>Add Your Review</h4>
-
-    <div class="rating-input">
-      <mat-icon
-        *ngFor="let s of stars"
-        (click)="setRating(s)"
-        [class.filled]="s <= newReview.rating"
-        >star</mat-icon
-      >
-    </div>
-
-    <textarea
-      placeholder="Write your review..."
-      [(ngModel)]="newReview.comment"
-      rows="3"
-    ></textarea>
-
-    <div class="review-actions">
-      <button mat-stroked-button color="primary" (click)="resetReview()">
-        Cancel
-      </button>
-      <button
-        mat-flat-button
-        color="primary"
-        [disabled]="!newReview.comment || newReview.rating === 0"
-        (click)="submitReview()"
-      >
-        Submit
-      </button>
-    </div>
-  </div>
-
-  <!-- 🔒 Not logged in -->
-  <ng-template #loginPrompt>
-    <div class="login-prompt">
-      <p>
-        You need to
-        <a routerLink="/login">sign in</a> to leave a review.
-      </p>
-    </div>
-  </ng-template>
-</div>
-
-<!-- Loader -->
-
-
