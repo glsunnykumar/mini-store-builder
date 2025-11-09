@@ -281,6 +281,33 @@
   }
 }
 
+.cart-snackbar {
+  background-color: #3f51b5; // Indigo Material color
+  color: #fff;
+  font-weight: 500;
+  border-radius: 6px;
+
+  button {
+    color: #ffeb3b !important; // yellow accent for "Close"
+  }
+}
+
+
+.mat-mdc-snack-bar-container {
+  animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 
 /* 🌀 Loader */
 .loading {

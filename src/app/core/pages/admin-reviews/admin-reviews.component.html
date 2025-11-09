@@ -1,0 +1,42 @@
+<div class="admin-reviews-container">
+  <h2>Pending Reviews for Approval</h2>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading pending reviews...</p>
+  </div>
+
+  <div *ngIf="!loading && pendingReviews.length === 0" class="no-reviews">
+    <p>No pending reviews to approve.</p>
+  </div>
+
+  <div *ngIf="pendingReviews.length > 0" class="review-grid">
+    <mat-card *ngFor="let review of pendingReviews" class="review-card">
+      <div class="review-header">
+        <mat-icon>person</mat-icon>
+        <div class="details">
+          <h3>{{ review.userName }}</h3>
+          <p>Product ID: {{ review.productId }}</p>
+          <div class="stars">
+            <mat-icon
+              *ngFor="let s of [1, 2, 3, 4, 5]"
+              [class.filled]="s <= review.rating"
+              >star</mat-icon
+            >
+          </div>
+        </div>
+      </div>
+
+      <p class="comment">{{ review.comment }}</p>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="approve(review)">
+          <mat-icon>check_circle</mat-icon> Approve
+        </button>
+        <button mat-stroked-button color="warn" (click)="reject(review)">
+          <mat-icon>cancel</mat-icon> Reject
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

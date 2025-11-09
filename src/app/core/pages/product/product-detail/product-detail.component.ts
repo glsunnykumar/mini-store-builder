@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,8 +15,9 @@ import { CartService } from '../../../services/cart/cart.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ProductService } from '../../../services/product/product.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCard, MatCardModule } from "@angular/material/card";
+import { MatCard, MatCardModule } from '@angular/material/card';
 import { ReviewService } from '../../../services/review/review.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,14 +30,14 @@ import { ReviewService } from '../../../services/review/review.service';
     FormsModule,
     RouterModule,
     MatProgressSpinnerModule,
-    MatCard
-],
+    MatCardModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
 })
-export class ProductDetailComponent implements OnInit,OnDestroy {
-
-    @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
+export class ProductDetailComponent implements OnInit, OnDestroy {
+  @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
 
   product: any;
   loading = true;
@@ -37,12 +45,12 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
   selectedImage = '';
   stars = [1, 2, 3, 4, 5];
   user: any = null;
-   reviews: any[] = [];
+  reviews: any[] = [];
   newReview = { rating: 0, comment: '', name: '' };
-   similarProducts: any[] = [];
+  similarProducts: any[] = [];
   averageRating = 0;
 
-   private autoScrollInterval: any;
+  private autoScrollInterval: any;
   private autoScrollPaused = false;
 
   constructor(
@@ -50,8 +58,9 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-      private reviewService: ReviewService,
-    private productService: ProductService
+    private reviewService: ReviewService,
+    private productService: ProductService,
+    private snackBar: MatSnackBar
   ) {}
 
   async ngOnInit() {
@@ -59,8 +68,8 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     if (id) {
       console.log(id);
       this.product = await this.productService.getProductIdById(id);
-       this.loadSimilarProducts(this.product.categoryId);
-        this.loadApprovedReviews(id);
+      this.loadSimilarProducts(this.product.categoryId);
+      this.loadApprovedReviews(id);
       this.loading = false;
       this.calculateAverageRating();
     }
@@ -73,20 +82,30 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     });
   }
 
-    async loadSimilarProducts(categoryId: string) {
-    const allProducts = await this.productService.getProductsByCategory(categoryId);
-    this.similarProducts = allProducts.filter((p: any) => p.id !== this.product.id);
+  async loadSimilarProducts(categoryId: string) {
+    const allProducts = await this.productService.getProductsByCategory(
+      categoryId
+    );
+    this.similarProducts = allProducts.filter(
+      (p: any) => p.id !== this.product.id
+    );
   }
 
-    scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -300,
+      behavior: 'smooth',
+    });
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 300,
+      behavior: 'smooth',
+    });
   }
 
-    /** 🔁 Auto Scroll Functionality */
+  /** 🔁 Auto Scroll Functionality */
   startAutoScroll() {
     this.stopAutoScroll(); // prevent duplicates
     this.autoScrollInterval = setInterval(() => {
@@ -123,7 +142,6 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     this.stopAutoScroll();
   }
 
-
   /** Star selection */
   setRating(star: number) {
     this.newReview.rating = star;
@@ -138,9 +156,10 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
   }
 
   /** 🔐 Only logged-in user can submit */
-    /** 🔍 Fetch approved reviews only */
+  /** 🔍 Fetch approved reviews only */
   async loadApprovedReviews(productId: string) {
     this.reviews = await this.reviewService.getApprovedReviews(productId);
+    console.log('approved review for admin', this.reviews);
     this.calculateAverageRating();
   }
 
@@ -159,7 +178,6 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     this.resetReview();
   }
 
-  
   calculateAverageRating() {
     if (!this.product.reviews || this.product.reviews.length === 0) {
       this.averageRating = 0;
@@ -177,8 +195,15 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
+    // ✅ Show snackbar message
+    this.snackBar.open(`${product.name} added to cart 🛒`, 'Close', {
+      duration: 3000, // visible for 3 seconds
+      panelClass: ['cart-snackbar'],
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+    });
   }
-    openProduct(product: any) {
+  openProduct(product: any) {
     this.router.navigate(['/store/product', product.id]);
   }
 }

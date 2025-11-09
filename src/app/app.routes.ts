@@ -130,6 +130,14 @@ export const routes: Routes = [
             (m) => m.AdminOrdersComponent
           ),
       },
+
+      {
+        path: 'reviews',
+        loadComponent: () =>
+          import('./core/pages/admin-reviews/admin-reviews.component').then(
+            (m) => m.AdminReviewsComponent
+          ),
+      },
     ],
   },
 
