@@ -82,7 +82,6 @@ export class AddProductDialogComponent implements OnInit {
   async loadProductData(id: string) {
     try {
       const product = await this.productService.getProductById(id);
-     
       if (product) {
         this.imageDbUrl = product['imageUrl'];
         console.log('the image is uploaded at' , this.imageDbUrl);

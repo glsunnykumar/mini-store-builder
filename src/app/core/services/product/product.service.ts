@@ -67,6 +67,12 @@ export class ProductService {
     const snapshot = await getDoc(docRef);
     return snapshot.exists() ? snapshot.data() : null;
   }
+
+  async getProductIdById(productId: string) {
+  const docRef = doc(this.firestore, `products/${productId}`);
+  const snapshot = await getDoc(docRef);
+  return snapshot.exists() ? { id: snapshot.id, ...snapshot.data() } : null;
+}
   /** 🔴 Delete product (and optional image) */
   async deleteProduct(productId: string, imageUrl?: string) {
     if (imageUrl) {

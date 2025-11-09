@@ -42,30 +42,7 @@
   </div>
 </ng-template>
 
-<!-- Product Details (existing content) -->
-<div class="product-detail-container" *ngIf="product">
-  <div class="image-section">
-    <img [src]="product.imageUrl" [alt]="product.name" class="main-image" />
-  </div>
 
-  <div class="info-section">
-    <h2 class="product-name">{{ product.name }}</h2>
-    <p class="product-category">Category ID: {{ product.categoryId }}</p>
-
-    <h3 class="price">₹{{ product.price }}</h3>
-
-    <p class="description">{{ product.description }}</p>
-
-    <div class="actions">
-      <button mat-flat-button color="primary" (click)="addToCart(product)">
-        <mat-icon>shopping_cart</mat-icon> Add to Cart
-      </button>
-      <button mat-stroked-button color="warn" routerLink="/store">
-        <mat-icon>close</mat-icon> Cancel
-      </button>
-    </div>
-  </div>
-</div>
 
 <!-- ⭐ Rating & Review Section -->
 <div class="review-section" *ngIf="product">

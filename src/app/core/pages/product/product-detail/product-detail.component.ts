@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';// 🔹 check login state
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // 🔹 check login state
 import { CartService } from '../../../services/cart/cart.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ProductService } from '../../../services/product/product.service';
@@ -12,42 +12,43 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, MatIconModule, 
+  imports: [
+    CommonModule,
+    MatIconModule,
     MatButtonModule,
-     FormsModule, 
-     RouterModule,
-     MatProgressSpinnerModule
-    ],
+    FormsModule,
+    RouterModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
-   product: any;
+  product: any;
   loading = true;
 
   selectedImage = '';
   stars = [1, 2, 3, 4, 5];
-    user: any = null;
+  user: any = null;
   newReview = { rating: 0, comment: '', name: '' };
   averageRating = 0;
-
 
   constructor(
     private cartService: CartService,
     private auth: AuthService,
     private router: Router,
-     private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private productService: ProductService
   ) {}
 
   async ngOnInit() {
-    console.log(this.product);
-    
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.product = await this.productService.getProductById(id);
+      console.log(id);
+      this.product = await this.productService.getProductIdById(id);
+      console.log(this.product);
       this.loading = false;
-       this.calculateAverageRating();
+      this.calculateAverageRating();
     }
     this.selectedImage = this.product?.images?.[0] || '';
 
@@ -57,8 +58,6 @@ export class ProductDetailComponent implements OnInit {
       this.newReview.name = user?.displayName || 'Anonymous';
     });
   }
-    
-  
 
   /** Star selection */
   setRating(star: number) {
@@ -66,7 +65,11 @@ export class ProductDetailComponent implements OnInit {
   }
 
   resetReview() {
-    this.newReview = { rating: 0, comment: '', name: this.user?.displayName || 'Anonymous' };
+    this.newReview = {
+      rating: 0,
+      comment: '',
+      name: this.user?.displayName || 'Anonymous',
+    };
   }
 
   /** 🔐 Only logged-in user can submit */
@@ -107,8 +110,4 @@ export class ProductDetailComponent implements OnInit {
   addToCart(product: any) {
     this.cartService.addToCart(product);
   }
-
- 
-
- 
 }
