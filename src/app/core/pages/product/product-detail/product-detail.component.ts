@@ -27,9 +27,10 @@ export class ProductDetailComponent implements OnInit {
 
   selectedImage = '';
   stars = [1, 2, 3, 4, 5];
-
-  user: any = null;
+    user: any = null;
   newReview = { rating: 0, comment: '', name: '' };
+  averageRating = 0;
+
 
   constructor(
     private cartService: CartService,
@@ -46,7 +47,7 @@ export class ProductDetailComponent implements OnInit {
     if (id) {
       this.product = await this.productService.getProductById(id);
       this.loading = false;
-      console.log('loaded product is',this.product);
+       this.calculateAverageRating();
     }
     this.selectedImage = this.product?.images?.[0] || '';
 
@@ -59,14 +60,7 @@ export class ProductDetailComponent implements OnInit {
     
   
 
-  selectImage(img: string) {
-    this.selectedImage = img;
-  }
-
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-  }
-
+  /** Star selection */
   setRating(star: number) {
     this.newReview.rating = star;
   }
@@ -75,7 +69,7 @@ export class ProductDetailComponent implements OnInit {
     this.newReview = { rating: 0, comment: '', name: this.user?.displayName || 'Anonymous' };
   }
 
-  /** 🔐 Submit review only if logged in */
+  /** 🔐 Only logged-in user can submit */
   submitReview() {
     if (!this.user) {
       this.router.navigate(['/login']);
@@ -91,7 +85,30 @@ export class ProductDetailComponent implements OnInit {
       userId: this.user.uid,
     });
 
-    // Reset form
+    this.calculateAverageRating();
     this.resetReview();
   }
+
+  calculateAverageRating() {
+    if (!this.product.reviews || this.product.reviews.length === 0) {
+      this.averageRating = 0;
+      return;
+    }
+    const total = this.product.reviews.reduce(
+      (sum: number, r: any) => sum + (r.rating || 0),
+      0
+    );
+    this.averageRating = total / this.product.reviews.length;
+  }
+  selectImage(img: string) {
+    this.selectedImage = img;
+  }
+
+  addToCart(product: any) {
+    this.cartService.addToCart(product);
+  }
+
+ 
+
+ 
 }
