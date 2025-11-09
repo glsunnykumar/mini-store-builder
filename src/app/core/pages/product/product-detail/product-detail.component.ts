@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { ProductService } from '../../../services/product/product.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCard, MatCardModule } from "@angular/material/card";
+import { ReviewService } from '../../../services/review/review.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -36,6 +37,7 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
   selectedImage = '';
   stars = [1, 2, 3, 4, 5];
   user: any = null;
+   reviews: any[] = [];
   newReview = { rating: 0, comment: '', name: '' };
    similarProducts: any[] = [];
   averageRating = 0;
@@ -48,6 +50,7 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+      private reviewService: ReviewService,
     private productService: ProductService
   ) {}
 
@@ -57,6 +60,7 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
       console.log(id);
       this.product = await this.productService.getProductIdById(id);
        this.loadSimilarProducts(this.product.categoryId);
+        this.loadApprovedReviews(id);
       this.loading = false;
       this.calculateAverageRating();
     }
@@ -134,7 +138,14 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
   }
 
   /** 🔐 Only logged-in user can submit */
-  submitReview() {
+    /** 🔍 Fetch approved reviews only */
+  async loadApprovedReviews(productId: string) {
+    this.reviews = await this.reviewService.getApprovedReviews(productId);
+    this.calculateAverageRating();
+  }
+
+  /** ➕ Submit a new review (pending approval) */
+  async submitReview() {
     if (!this.user) {
       this.router.navigate(['/login']);
       return;
@@ -142,17 +153,13 @@ export class ProductDetailComponent implements OnInit,OnDestroy {
 
     if (!this.newReview.comment || this.newReview.rating === 0) return;
 
-    if (!this.product.reviews) this.product.reviews = [];
-    this.product.reviews.push({
-      ...this.newReview,
-      date: new Date().toISOString(),
-      userId: this.user.uid,
-    });
+    await this.reviewService.addReview(this.product.id, this.newReview);
 
-    this.calculateAverageRating();
+    alert('✅ Your review has been submitted for admin approval.');
     this.resetReview();
   }
 
+  
   calculateAverageRating() {
     if (!this.product.reviews || this.product.reviews.length === 0) {
       this.averageRating = 0;
