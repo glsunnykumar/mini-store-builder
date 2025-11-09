@@ -1,28 +1,33 @@
-<div class="product-detail-container" *ngIf="product; else loadingTemplate">
-  <!-- 🖼️ Left Section: Product Image -->
-  <div class="image-section">
-    <img [src]="product.imageUrl" [alt]="product.name" class="main-image" />
+<!-- ===================== PRODUCT HERO SECTION ===================== -->
+<section class="product-hero" *ngIf="product; else loadingTemplate">
+  <!-- 🖼️ Product Image -->
+  <div class="image-area">
+    <img
+      [src]="product.imageUrl"
+      [alt]="product.name"
+      class="main-image"
+    />
   </div>
 
-  <!-- 🧾 Right Section: Product Info -->
-  <div class="info-section">
-    <h2 class="product-name">{{ product.name }}</h2>
-    <p class="product-category">Category ID: {{ product.categoryId }}</p>
-
-    <h3 class="price">₹{{ product.price }}</h3>
+  <!-- 🧾 Product Details -->
+  <div class="details-area">
+    <h1 class="product-name">{{ product.name }}</h1>
+    <p class="product-category">
+      Category ID: {{ product.categoryId }}
+    </p>
+    <p class="price">₹{{ product.price }}</p>
     <p class="description">{{ product.description }}</p>
 
     <div class="actions">
       <button mat-flat-button color="primary" (click)="addToCart(product)">
         <mat-icon>shopping_cart</mat-icon> Add to Cart
       </button>
-
       <button mat-stroked-button color="warn" routerLink="/store">
         <mat-icon>close</mat-icon> Cancel
       </button>
     </div>
 
-    <!-- ⭐ Rating & Review Section (Moved Below Buttons) -->
+    <!-- ⭐ Ratings & Reviews Section -->
     <div class="review-section" *ngIf="product">
       <h3 class="review-title">Ratings & Reviews</h3>
 
@@ -56,7 +61,7 @@
         <p class="no-review-text">No reviews yet. Be the first to review!</p>
       </ng-template>
 
-      <!-- ✏️ Add Review (Only Logged-in) -->
+      <!-- ✏️ Add Review (Only for logged-in users) -->
       <div *ngIf="user; else loginPrompt" class="add-review">
         <h4>Add Your Review</h4>
 
@@ -88,7 +93,7 @@
         </div>
       </div>
 
-      <!-- 🔒 Not logged in -->
+      <!-- 🔒 Login Prompt -->
       <ng-template #loginPrompt>
         <div class="login-prompt">
           <p>
@@ -100,28 +105,28 @@
       </ng-template>
     </div>
   </div>
-</div>
+</section>
 
-<!-- 🛍️ SIMILAR PRODUCTS SECTION -->
-<div class="similar-products" *ngIf="similarProducts.length > 0">
-  <h3>Similar Products</h3>
+<!-- ===================== SIMILAR PRODUCTS ===================== -->
+<section class="similar-products-section" *ngIf="similarProducts.length > 0">
+  <h2>Similar Products</h2>
 
-  <div class="similar-grid">
+  <div class="scroll-container">
     <mat-card
       *ngFor="let p of similarProducts"
-      class="similar-card"
+      class="product-card"
       (click)="openProduct(p)"
     >
-      <img [src]="p.imageUrl" alt="{{ p.name }}" class="similar-image" />
-      <div class="similar-info">
+      <img [src]="p.imageUrl" alt="{{ p.name }}" />
+      <div class="info">
         <h4>{{ p.name }}</h4>
-        <p class="price">₹{{ p.price }}</p>
+        <p>₹{{ p.price }}</p>
       </div>
     </mat-card>
   </div>
-</div>
+</section>
 
-<!-- Loader -->
+<!-- ===================== LOADER ===================== -->
 <ng-template #loadingTemplate>
   <div class="loading">
     <mat-spinner diameter="40"></mat-spinner>
