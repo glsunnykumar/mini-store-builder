@@ -94,7 +94,10 @@
 </section>
 
 <!-- ===================== SIMILAR PRODUCTS CAROUSEL ===================== -->
-<section class="similar-products-section" *ngIf="similarProducts.length > 0">
+<section
+  class="similar-products-section"
+  *ngIf="similarProducts.length > 0"
+>
   <div class="header-with-arrows">
     <h2>Similar Products</h2>
     <div class="arrows">
@@ -107,7 +110,13 @@
     </div>
   </div>
 
-  <div class="scroll-container" #scrollContainer>
+  <!-- 🧭 Auto-scroll container -->
+  <div
+    class="scroll-container"
+    #scrollContainer
+    (mouseenter)="pauseAutoScroll()"
+    (mouseleave)="resumeAutoScroll()"
+  >
     <mat-card
       *ngFor="let p of similarProducts"
       class="product-card"

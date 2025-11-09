@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,7 @@ import { MatCard, MatCardModule } from "@angular/material/card";
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit,OnDestroy {
 
     @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
 
@@ -39,6 +39,9 @@ export class ProductDetailComponent implements OnInit {
   newReview = { rating: 0, comment: '', name: '' };
    similarProducts: any[] = [];
   averageRating = 0;
+
+   private autoScrollInterval: any;
+  private autoScrollPaused = false;
 
   constructor(
     private cartService: CartService,
@@ -78,6 +81,44 @@ export class ProductDetailComponent implements OnInit {
   scrollRight() {
     this.scrollContainer.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
   }
+
+    /** 🔁 Auto Scroll Functionality */
+  startAutoScroll() {
+    this.stopAutoScroll(); // prevent duplicates
+    this.autoScrollInterval = setInterval(() => {
+      if (!this.autoScrollPaused && this.scrollContainer) {
+        const container = this.scrollContainer.nativeElement;
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+        // If at end, scroll back to start
+        if (container.scrollLeft >= maxScrollLeft - 10) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: 250, behavior: 'smooth' });
+        }
+      }
+    }, 4000); // Scroll every 4 seconds
+  }
+
+  stopAutoScroll() {
+    if (this.autoScrollInterval) {
+      clearInterval(this.autoScrollInterval);
+      this.autoScrollInterval = null;
+    }
+  }
+
+  pauseAutoScroll() {
+    this.autoScrollPaused = true;
+  }
+
+  resumeAutoScroll() {
+    this.autoScrollPaused = false;
+  }
+
+  ngOnDestroy() {
+    this.stopAutoScroll();
+  }
+
 
   /** Star selection */
   setRating(star: number) {
