@@ -4,7 +4,7 @@
 
 <div class="dialog-content">
 
-   <app-global-loader [loading]="loading" />
+  <app-global-loader [loading]="loading" />
   <form [formGroup]="productForm" class="form-container">
 
     <!-- 🔹 Category Dropdown -->
@@ -13,12 +13,7 @@
       <mat-select formControlName="categoryId">
         <mat-option *ngFor="let cat of categories" [value]="cat.id">
           <div class="category-option">
-            <img
-              *ngIf="cat.coverImage"
-              [src]="cat.coverImage"
-              alt="{{ cat.name }}"
-              class="option-image"
-            />
+            <img *ngIf="cat.coverImage" [src]="cat.coverImage" alt="{{ cat.name }}" class="option-image" />
             <span>{{ cat.name }}</span>
           </div>
         </mat-option>
@@ -34,12 +29,7 @@
     <!-- 🔹 Description -->
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
-      <textarea
-        matInput
-        placeholder="Enter product description"
-        rows="3"
-        formControlName="description"
-      ></textarea>
+      <textarea matInput placeholder="Enter product description" rows="3" formControlName="description"></textarea>
     </mat-form-field>
 
     <!-- 🔹 Price -->
@@ -48,25 +38,42 @@
       <input matInput type="number" placeholder="Enter price" formControlName="price" />
     </mat-form-field>
 
-    <!-- 🔹 Image Upload -->
-     <!-- 🔹 Multiple Image Upload -->
-<div class="upload">
-  <label class="upload-label">
-    <mat-icon>upload</mat-icon>
-    <span>{{ selectedFiles.length ? selectedFiles.length + ' Images Selected' : 'Choose Images' }}</span>
-    <input type="file" accept="image/*" multiple hidden (change)="onFilesSelected($event)" />
-  </label>
+    <!-- 🔹 Multiple Image Upload Section -->
+    <div class="upload-section">
+      <h3 class="upload-title">Product Images</h3>
+      <p class="upload-hint">
+        You can upload <strong>multiple images</strong>.
+        Click <strong>⭐ Set as Cover</strong> to select the main image.
+        Use <strong>🗑️ Delete</strong> to remove an image.
+      </p>
 
-  <!-- 🔹 Image Preview Grid -->
-  <div class="preview-grid" *ngIf="imagePreviews.length > 0">
-    <div class="preview-item" *ngFor="let img of imagePreviews; let i = index">
-      <img [src]="img" alt="Preview {{ i + 1 }}" />
-      <button mat-icon-button color="warn" class="remove-btn" (click)="removeImage(i)">
-        <mat-icon>close</mat-icon>
-      </button>
+      <label class="upload-label">
+        <mat-icon>cloud_upload</mat-icon>
+        <span>{{ selectedFiles.length ? selectedFiles.length + ' Images Selected' : 'Upload Product Images' }}</span>
+        <input type="file" accept="image/*" multiple hidden (change)="onFilesSelected($event)" />
+      </label>
+
+      <!-- 🔹 Image Preview Grid -->
+      <div class="preview-grid" *ngIf="imagePreviews.length > 0">
+        <div class="preview-item" *ngFor="let img of imagePreviews; let i = index"
+          [class.cover]="i === coverImageIndex">
+          <img [src]="img" alt="Preview {{ i + 1 }}" />
+
+          <div class="image-controls">
+            <button mat-icon-button color="primary" (click)="setAsCover(i)" matTooltip="Set as Cover">
+              <mat-icon>star</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="removeImage(i)" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <div class="cover-badge" *ngIf="i === coverImageIndex">Cover Image</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+
 
   </form>
 </div>
@@ -76,23 +83,12 @@
   <button mat-stroked-button (click)="cancel()">Cancel</button>
 
   <!-- 🔹 Show Delete only in Edit Mode -->
-  <button
-    *ngIf="isEditMode"
-    mat-flat-button
-    color="warn"
-    (click)="deleteProduct()"
-    [disabled]="loading"
-  >
+  <button *ngIf="isEditMode" mat-flat-button color="warn" (click)="deleteProduct()" [disabled]="loading">
     Delete Product
   </button>
 
 
-  <button
-    mat-flat-button
-    color="primary"
-    (click)="saveProduct()"
-    [disabled]="productForm.invalid || loading"
-  >
+  <button mat-flat-button color="primary" (click)="saveProduct()" [disabled]="productForm.invalid || loading">
     {{ isEditMode ? 'Update Product' : 'Save Product' }}
   </button>
 </div>
