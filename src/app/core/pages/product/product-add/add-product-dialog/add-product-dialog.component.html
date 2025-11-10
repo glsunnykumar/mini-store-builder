@@ -49,18 +49,25 @@
     </mat-form-field>
 
     <!-- 🔹 Image Upload -->
-    <div class="upload">
-      <label class="upload-label">
-        <mat-icon>upload</mat-icon>
-        <span>{{ selectedFile ? selectedFile.name : 'Choose Image' }}</span>
-        <input type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
-      </label>
+     <!-- 🔹 Multiple Image Upload -->
+<div class="upload">
+  <label class="upload-label">
+    <mat-icon>upload</mat-icon>
+    <span>{{ selectedFiles.length ? selectedFiles.length + ' Images Selected' : 'Choose Images' }}</span>
+    <input type="file" accept="image/*" multiple hidden (change)="onFilesSelected($event)" />
+  </label>
 
-      <!-- Image Preview -->
-      <div class="preview" *ngIf="imagePreview">
-        <img [src]="imagePreview" alt="Preview" />
-      </div>
+  <!-- 🔹 Image Preview Grid -->
+  <div class="preview-grid" *ngIf="imagePreviews.length > 0">
+    <div class="preview-item" *ngFor="let img of imagePreviews; let i = index">
+      <img [src]="img" alt="Preview {{ i + 1 }}" />
+      <button mat-icon-button color="warn" class="remove-btn" (click)="removeImage(i)">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
+  </div>
+</div>
+
   </form>
 </div>
 

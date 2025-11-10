@@ -87,6 +87,40 @@ mat-form-field {
   }
 }
 
+/* Multiple Image Preview Grid */
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.preview-item {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafafa;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    font-size: 12px;
+  }
+}
+
+
 /* Category option layout inside dropdown */
 .category-option {
   display: flex;

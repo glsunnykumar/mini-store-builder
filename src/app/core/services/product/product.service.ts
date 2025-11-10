@@ -17,18 +17,11 @@ export class ProductService {
   private storage = inject(Storage);
 
 
-    async addProduct(productData: any, file: File | null) {
-    let imageUrl = '';
-
-    if (file) {
-      const filePath = `products/${Date.now()}_${file.name}`;
-      const fileRef = ref(this.storage, filePath);
-      await uploadBytes(fileRef, file);
-      imageUrl = await getDownloadURL(fileRef);
-    }
-
-    const productRef = collection(this.firestore, 'products');
-    await addDoc(productRef, { ...productData, imageUrl, createdAt: new Date() });
+   /** ➕ Add Product */
+  async addProduct(productData: any) {
+    const refCollection = collection(this.firestore, 'products');
+    productData.createdAt = new Date();
+    await addDoc(refCollection, productData);
   }
 
    /** ✅ Get all products (used in Store & Admin Dashboard) */
@@ -56,19 +49,31 @@ export class ProductService {
 }
 
  
-  async updateProduct(productId: string, productData: any, file: File | null) {
+    /** ✏️ Update Product (with or without new images) */
+  async updateProduct(productId: string, productData: any, files: File[] = []) {
     const docRef = doc(this.firestore, `products/${productId}`);
 
-    let imageUrl = productData.imageUrl;
+    let updatedImages = productData.images || [];
 
-    if (file) {
-      const filePath = `products/${Date.now()}_${file.name}`;
-      const fileRef = ref(this.storage, filePath);
-      await uploadBytes(fileRef, file);
-      imageUrl = await getDownloadURL(fileRef);
+    // If new files are provided, upload them and append to the array
+    if (files && files.length > 0) {
+      const uploadPromises = files.map(async (file) => {
+        const filePath = `products/${Date.now()}_${file.name}`;
+        const fileRef = ref(this.storage, filePath);
+        await uploadBytes(fileRef, file);
+        return await getDownloadURL(fileRef);
+      });
+
+      const newImageUrls = await Promise.all(uploadPromises);
+      updatedImages = [...updatedImages, ...newImageUrls];
     }
 
-    await updateDoc(docRef, { ...productData, imageUrl, updatedAt: new Date() });
+    // Update Firestore document
+    await updateDoc(docRef, {
+      ...productData,
+      images: updatedImages,
+      updatedAt: new Date(),
+    });
   }
 
   async getProductById(productId: string) {

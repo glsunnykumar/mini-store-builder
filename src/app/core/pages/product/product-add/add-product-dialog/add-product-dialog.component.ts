@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductService } from '../../../../services/product/product.service';
@@ -11,8 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { GlobalLoaderComponent } from "../../../../shared/global-loader/global-loader.component";
-import { list } from '@angular/fire/storage';
-
+import { getDownloadURL, Storage, ref, uploadBytes } from '@angular/fire/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-product-dialog',
@@ -35,17 +35,20 @@ export class AddProductDialogComponent implements OnInit {
   productForm!: FormGroup;
   categories: any[] = [];
   imagePreview: string | ArrayBuffer | null = null;
+  imagePreviews: string[] = [];
   selectedFile: File | null = null;
   isEditMode = false;
   productId: string | null = null;
   loading = true;
   imageDbUrl :string ='';
+  selectedFiles: File[] = [];
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddProductDialogComponent>,
     private productService: ProductService,
     private categoryService: CategoryService,
+    private storage : Storage,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -100,35 +103,60 @@ export class AddProductDialogComponent implements OnInit {
     }
   }
 
-  /** Handle file input */
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+   onFilesSelected(event: any) {
+    const files: FileList = event.target.files;
+    this.selectedFiles = Array.from(files);
 
+    this.imagePreviews = [];
+    this.selectedFiles.forEach((file) => {
       const reader = new FileReader();
-      reader.onload = () => (this.imagePreview = reader.result);
+      reader.onload = (e: any) => this.imagePreviews.push(e.target.result);
       reader.readAsDataURL(file);
-    }
+    });
   }
 
-  /** Save or update product */
-  async saveProduct() {
+   removeImage(index: number) {
+    this.imagePreviews.splice(index, 1);
+    this.selectedFiles.splice(index, 1);
+  }
+
+
+  async uploadImages(): Promise<string[]> {
+    const urls: string[] = [];
+    for (const file of this.selectedFiles) {
+      const filePath = `products/${uuidv4()}_${file.name}`;
+      const fileRef = ref(this.storage, filePath);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+      urls.push(url);
+    }
+    return urls;
+  }
+   async saveProduct() {
     if (this.productForm.invalid) return;
+
     this.loading = true;
-
-    const productData = this.productForm.value;
-
     try {
-      if (this.isEditMode && this.productId) {
-        // 🧩 Update Product
-        await this.productService.updateProduct(this.productId, productData, this.selectedFile);
-      } else {
-        // ➕ Add New Product
-        await this.productService.addProduct(productData, this.selectedFile);
-      }
+      const imageUrls = await this.uploadImages();
 
-      this.dialogRef.close(true);
+    const finalImages =
+      this.imagePreviews.length > 0
+        ? imageUrls
+        : this.data?.product?.images || [];
+
+    const productData = {
+      ...this.productForm.value,
+      images: finalImages,
+      imageUrl: finalImages.length > 0 ? finalImages[0] : '',
+    };
+
+    if (this.isEditMode && this.productId) {
+      await this.productService.updateProduct(this.productId, productData);
+    } else {
+      await this.productService.addProduct(productData);
+    }
+
+    this.dialogRef.close(true);
     } catch (error) {
       console.error('Error saving product:', error);
     } finally {
