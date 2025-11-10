@@ -101,25 +101,41 @@ export class AddProductDialogComponent implements OnInit {
 
   /** Load product by ID and populate form */
   async loadProductData(id: string) {
-    try {
-      const product = await this.productService.getProductById(id);
-      if (product) {
-        this.imageDbUrl = product['imageUrl'];
-        console.log('the image is uploaded at', this.imageDbUrl);
-        this.productForm.patchValue({
-          categoryId: product['categoryId'],
-          name: product['name'],
-          description: product['description'],
-          price: product['price'],
-          imageUrl: product['imageUrl'],
-        });
-        this.imagePreview = product['imageUrl'];
+  try {
+    const product = await this.productService.getProductById(id);
+    if (product) {
+      this.imageDbUrl = product['imageUrl'];
+      console.log('Product loaded:', product);
+
+      // ✅ Patch basic product info
+      this.productForm.patchValue({
+        categoryId: product['categoryId'],
+        name: product['name'],
+        description: product['description'],
+        price: product['price'],
+      });
+
+      // ✅ Load all images
+      if (Array.isArray(product['images']) && product['images'].length > 0) {
+        this.imagePreviews = [...product['images']]; // all uploaded images
+      } else if (product['imageUrl']) {
+        // fallback for old single-image products
+        this.imagePreviews = [product['imageUrl']];
+      } else {
+        this.imagePreviews = [];
       }
-      this.loading = false;
-    } catch (error) {
-      console.error('Error loading product:', error);
+
+      // ✅ Set cover image (if exists)
+      this.coverImageIndex = 0;
+      this.imageDbUrl = this.imagePreviews[0] ;
     }
+
+    this.loading = false;
+  } catch (error) {
+    console.error('Error loading product:', error);
+    this.loading = false;
   }
+}
 
   onFilesSelected(event: any) {
     const files: FileList = event.target.files;
