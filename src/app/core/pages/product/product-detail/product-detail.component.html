@@ -1,9 +1,41 @@
 <!-- ===================== PRODUCT HERO SECTION ===================== -->
 <section class="product-hero" *ngIf="product; else loadingTemplate">
   <!-- 🖼️ Product Image -->
-  <div class="image-area">
-    <img [src]="product.imageUrl" [alt]="product.name" class="main-image" />
+  <!-- 🖼️ Image Carousel -->
+<div class="image-area" *ngIf="product.images?.length">
+  <div class="carousel">
+
+    <!-- Left arrow -->
+    <button class="nav left" (click)="prevImage()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <!-- Main image -->
+    <div class="carousel-main">
+      <img
+        [src]="product.images[selectedImageIndex]"
+        [alt]="product.name"
+      />
+    </div>
+
+    <!-- Right arrow -->
+    <button class="nav right" (click)="nextImage()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <!-- Thumbnails -->
+    <div class="thumbnails">
+      <img
+        *ngFor="let img of product.images; let i = index"
+        [src]="img"
+        (click)="selectImage(i)"
+        [class.active]="i === selectedImageIndex"
+      />
+    </div>
+
   </div>
+</div>
+
 
   <!-- 🧾 Product Details -->
   <div class="details-area">

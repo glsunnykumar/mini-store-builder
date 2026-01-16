@@ -43,6 +43,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   loading = true;
 
   selectedImage = '';
+  
   stars = [1, 2, 3, 4, 5];
   user: any = null;
   reviews: any[] = [];
@@ -52,6 +53,24 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   private autoScrollInterval: any;
   private autoScrollPaused = false;
+  selectedImageIndex = 0;
+
+selectImage(index: number) {
+  this.selectedImageIndex = index;
+}
+
+nextImage() {
+  if (!this.product?.images?.length) return;
+  this.selectedImageIndex =
+    (this.selectedImageIndex + 1) % this.product.images.length;
+}
+
+prevImage() {
+  if (!this.product?.images?.length) return;
+  this.selectedImageIndex =
+    (this.selectedImageIndex - 1 + this.product.images.length) %
+    this.product.images.length;
+}
 
   constructor(
     private cartService: CartService,
@@ -68,6 +87,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     if (id) {
       console.log(id);
       this.product = await this.productService.getProductIdById(id);
+      console.log(this.product);
       this.loadSimilarProducts(this.product.categoryId);
       this.loadApprovedReviews(id);
       this.loading = false;
@@ -80,6 +100,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.user = user;
       this.newReview.name = user?.displayName || 'Anonymous';
     });
+    
   }
 
   async loadSimilarProducts(categoryId: string) {
@@ -189,9 +210,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     );
     this.averageRating = total / this.product.reviews.length;
   }
-  selectImage(img: string) {
-    this.selectedImage = img;
-  }
+ 
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
