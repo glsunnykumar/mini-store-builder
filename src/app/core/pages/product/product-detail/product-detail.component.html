@@ -2,39 +2,55 @@
 <section class="product-hero" *ngIf="product; else loadingTemplate">
   <!-- 🖼️ Product Image -->
   <!-- 🖼️ Image Carousel -->
-<div class="image-area" *ngIf="product.images?.length">
+  <!-- ================= IMAGE CAROUSEL ================= -->
+<div class="image-area" *ngIf="product?.images?.length">
   <div class="carousel">
 
-    <!-- Left arrow -->
+    <!-- LEFT ARROW -->
     <button class="nav left" (click)="prevImage()">
       <mat-icon>chevron_left</mat-icon>
     </button>
 
-    <!-- Main image -->
-    <div class="carousel-main">
+    <!-- MAIN IMAGE -->
+    <div
+      class="carousel-main"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)"
+      (click)="openLightbox()"
+    >
       <img
         [src]="product.images[selectedImageIndex]"
         [alt]="product.name"
+        class="zoom-image"
       />
     </div>
 
-    <!-- Right arrow -->
+    <!-- RIGHT ARROW -->
     <button class="nav right" (click)="nextImage()">
       <mat-icon>chevron_right</mat-icon>
     </button>
 
-    <!-- Thumbnails -->
+    <!-- THUMBNAILS -->
     <div class="thumbnails">
       <img
         *ngFor="let img of product.images; let i = index"
         [src]="img"
-        (click)="selectImage(i)"
         [class.active]="i === selectedImageIndex"
+        (click)="selectImage(i)"
       />
     </div>
-
   </div>
 </div>
+
+<!-- ================= LIGHTBOX ================= -->
+<!-- FULLSCREEN LIGHTBOX -->
+<div class="lightbox" *ngIf="lightboxOpen" (click)="closeLightbox()">
+  <img
+    [src]="product.images[selectedImageIndex]"
+    alt="Fullscreen Image"
+  />
+</div>
+
 
 
   <!-- 🧾 Product Details -->

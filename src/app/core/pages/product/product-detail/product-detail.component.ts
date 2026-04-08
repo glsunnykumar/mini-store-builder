@@ -43,6 +43,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   loading = true;
 
   selectedImage = '';
+   /* ===== CAROUSEL ===== */
+  selectedImageIndex = 0;
+
+  /* ===== LIGHTBOX ===== */
+  lightboxOpen = false;
+
+  /* ===== SWIPE ===== */
+  private touchStartX = 0;
+  private touchEndX = 0;
   
   stars = [1, 2, 3, 4, 5];
   user: any = null;
@@ -53,7 +62,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   private autoScrollInterval: any;
   private autoScrollPaused = false;
-  selectedImageIndex = 0;
 
 selectImage(index: number) {
   this.selectedImageIndex = index;
@@ -90,6 +98,8 @@ prevImage() {
       console.log(this.product);
       this.loadSimilarProducts(this.product.categoryId);
       this.loadApprovedReviews(id);
+       this.resetCarousel();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       this.loading = false;
       this.calculateAverageRating();
     }
@@ -103,9 +113,48 @@ prevImage() {
     
   }
 
+   resetCarousel() {
+    this.selectedImageIndex = 0;
+    this.lightboxOpen = false;
+  }
+
+ /* ===== TOUCH / SWIPE ===== */
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+  }
+
+    onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    this.handleSwipe();
+  }
+
+  handleSwipe() {
+    const swipeDistance = this.touchEndX - this.touchStartX;
+
+    if (Math.abs(swipeDistance) < 50) return; // ignore small swipes
+
+    if (swipeDistance < 0) {
+      this.nextImage(); // swipe left
+    } else {
+      this.prevImage(); // swipe right
+    }
+  }
+
+   /* ===== LIGHTBOX ===== */
+
+  openLightbox() {
+    this.lightboxOpen = true;
+  }
+
+  closeLightbox() {
+    this.lightboxOpen = false;
+  }
+
   async loadSimilarProducts(categoryId: string) {
     const allProducts = await this.productService.getProductsByCategory(
       categoryId
+
     );
     this.similarProducts = allProducts.filter(
       (p: any) => p.id !== this.product.id

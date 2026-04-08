@@ -97,6 +97,34 @@
   }
 }
 
+/* ZOOM ON HOVER */
+.zoom-image {
+  transition: transform 0.4s ease;
+}
+
+.carousel-main:hover .zoom-image {
+  transform: scale(1.15);
+}
+
+/* FULLSCREEN LIGHTBOX */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+
+  img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+  }
+}
+
+
 /* Mobile */
 @media (max-width: 768px) {
   .carousel-main {
