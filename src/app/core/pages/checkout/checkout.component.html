@@ -33,13 +33,18 @@
     <div class="summary-section">
       <h3>Order Summary</h3>
 
-      <div *ngFor="let item of cartItems" class="summary-item">
-        <img [src]="item.imageUrl" alt="{{ item.name }}" />
-        <div class="info">
-          <p>{{ item.name }}</p>
-          <span>₹{{ item.price }} × {{ item.quantity }}</span>
-        </div>
-      </div>
+    <div *ngFor="let item of cartItems" class="summary-item">
+  <img [src]="item.imageUrl" alt="{{ item.name }}" />
+
+  <div class="info">
+    <p>{{ item.name }}</p>
+    <span>₹{{ item.price }} × {{ item.quantity }}</span>
+  </div>
+
+  <div class="price">
+    ₹{{ item.price * item.quantity }}
+  </div>
+</div>
 
       <div class="total">
         <h4>Total: ₹{{ total }}</h4>
